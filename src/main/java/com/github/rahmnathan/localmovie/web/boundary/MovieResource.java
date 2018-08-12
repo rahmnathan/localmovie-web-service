@@ -3,7 +3,7 @@ package com.github.rahmnathan.localmovie.web.boundary;
 import com.github.rahmnathan.localmovie.domain.*;
 import com.github.rahmnathan.localmovie.web.control.FileSender;
 import com.github.rahmnathan.localmovie.web.control.MediaMetadataService;
-import com.github.rahmnathan.localmovie.web.control.PushNotificationHandler;
+import com.github.rahmnathan.localmovie.web.control.PushTokenService;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Metrics;
 import org.apache.http.HttpHeaders;
@@ -30,9 +30,9 @@ import java.util.UUID;
 public class MovieResource {
     private final Logger logger = LoggerFactory.getLogger(MovieResource.class.getName());
     private static final String TRANSACTION_ID = "TransactionID";
-    private final PushNotificationHandler notificationHandler;
     private final FileSender fileSender = new FileSender();
     private final MediaMetadataService metadataService;
+    private final PushTokenService pushTokenService;
     private final String[] mediaPaths;
 
     private static final Counter MOVIES_COUNTER = Metrics.counter("localmovie.movies.request.counter");
@@ -41,9 +41,9 @@ public class MovieResource {
     private static final Counter STREAM_COUNTER = Metrics.counter("localmovie.stream.request.counter");
     private static final Counter EVENTS_COUNTER = Metrics.counter("localmovie.events.request.counter");
 
-    public MovieResource(MediaMetadataService metadataService, PushNotificationHandler notificationHandler,
+    public MovieResource(MediaMetadataService metadataService, PushTokenService pushTokenService,
                          @Value("${media.path}") String[] mediaPaths){
-        this.notificationHandler = notificationHandler;
+        this.pushTokenService = pushTokenService;
         this.metadataService = metadataService;
         this.mediaPaths = mediaPaths;
     }
@@ -56,7 +56,7 @@ public class MovieResource {
 
         if(movieInfoRequest.getPushToken() != null && movieInfoRequest.getDeviceId() != null){
             AndroidPushClient pushClient = new AndroidPushClient(movieInfoRequest.getDeviceId(), movieInfoRequest.getPushToken());
-            notificationHandler.addPushToken(pushClient);
+            pushTokenService.addPushToken(pushClient);
         }
 
         MovieSearchCriteria searchCriteria = new MovieSearchCriteria(movieInfoRequest.getPath(), movieInfoRequest.getPage(),

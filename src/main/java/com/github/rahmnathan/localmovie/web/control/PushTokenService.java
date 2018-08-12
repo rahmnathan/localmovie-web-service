@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class PushNotificationHandler {
-    private final Logger logger = LoggerFactory.getLogger(PushNotificationHandler.class);
+public class PushTokenService {
+    private final Logger logger = LoggerFactory.getLogger(PushTokenService.class);
     private final AndroidPushTokenRepository pushTokenRepository;
 
-    public PushNotificationHandler(AndroidPushTokenRepository pushTokenRepository) {
+    public PushTokenService(AndroidPushTokenRepository pushTokenRepository) {
         this.pushTokenRepository = pushTokenRepository;
     }
 
