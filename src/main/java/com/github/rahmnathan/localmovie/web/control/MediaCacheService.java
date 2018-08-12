@@ -5,14 +5,12 @@ import com.github.rahmnathan.localmovie.domain.MediaFile;
 import com.github.rahmnathan.localmovie.domain.MediaFileEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.github.rahmnathan.localmovie.domain.CachePrefix.FILE_LIST;
 import static com.github.rahmnathan.localmovie.domain.CachePrefix.MEDIA_EVENTS;
@@ -22,16 +20,16 @@ import static com.github.rahmnathan.localmovie.domain.CachePrefix.MEDIA_FILE;
 public class MediaCacheService {
     private final Logger logger = LoggerFactory.getLogger(MediaCacheService.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private final Jedis jedis;
+    private final JedisPool jedisPool;
 
-    public MediaCacheService(@Value("${jedis.host}") String jedisHost) {
-        this.jedis = new Jedis(jedisHost);
+    public MediaCacheService(JedisPool jedisPool) {
+        this.jedisPool = jedisPool;
     }
 
     public MediaFile getMedia(String path){
-        try {
+        try (Jedis jedis = jedisPool.getResource()){
             String cacheValue = jedis.get(MEDIA_FILE + path);
-            logger.info("Cache response for media get. Key: {} Value: {}");
+            logger.debug("Cache response for media get. Key: {} Value: {}", MEDIA_FILE + path, cacheValue);
             if(cacheValue != null) {
                 return OBJECT_MAPPER.readValue(cacheValue, MediaFile.class);
             }
@@ -45,8 +43,9 @@ public class MediaCacheService {
     }
 
     public Set<String> listFiles(String path) {
-        try {
+        try (Jedis jedis = jedisPool.getResource()){
             String cacheValue = jedis.get(FILE_LIST + path);
+            logger.debug("Cache response for file list get. Key: {} Value: {}", FILE_LIST + path, cacheValue);
             if(cacheValue != null)
                 return OBJECT_MAPPER.readValue(cacheValue, Set.class);
         } catch (IOException e){
@@ -57,8 +56,9 @@ public class MediaCacheService {
     }
 
     public List<MediaFileEvent> getMediaEvents(){
-        try {
+        try (Jedis jedis = jedisPool.getResource()){
             String cacheValue = jedis.get(MEDIA_EVENTS.name());
+            logger.debug("Cache response for events get. Key: {} Value: {}", MEDIA_EVENTS, cacheValue);
             if(cacheValue != null)
                 return OBJECT_MAPPER.readValue(cacheValue, List.class);
         } catch (IOException e){
