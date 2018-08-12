@@ -1,5 +1,15 @@
 version: '3'
 
 services:
-  localmovies:
+  localmovie-web:
     image: 192.168.1.8:5000/localmovie-web:latest
+    ports:
+      - "8080:8080"
+    volumes:
+    - "/media/nathan/LocalMedia:/media/nathan/LocalMedia"
+  localmovie-media-manager:
+    image: 192.168.1.8:5000/localmovie-media-manager:latest
+    volumes:
+      - "/media/nathan/LocalMedia:/media/nathan/LocalMedia"
+  redis:
+    image: library/redis:alpine
