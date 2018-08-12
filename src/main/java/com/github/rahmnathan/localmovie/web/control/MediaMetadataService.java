@@ -34,7 +34,7 @@ public class MediaMetadataService {
     }
 
     public MediaFile loadSingleMediaFile(String filePath) {
-        return getMediaMetadata(filePath);
+        return cacheService.getMedia(filePath);
     }
 
     public List<MediaFile> loadMediaFileList(MovieSearchCriteria searchCriteria) {
@@ -50,14 +50,10 @@ public class MediaMetadataService {
     }
 
     private List<MediaFile> loadMedia(Set<String> relativePaths){
-        return relativePaths.parallelStream()
+        return relativePaths.stream()
                 .sorted()
-                .map(this::getMediaMetadata)
+                .map(cacheService::getMedia)
                 .collect(Collectors.toList());
-    }
-
-    public MediaFile getMediaMetadata(String path){
-        return cacheService.getMedia(path);
     }
 
     public List<MediaFileEvent> getMediaFileEvents(LocalDateTime dateTime){

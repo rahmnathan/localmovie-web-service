@@ -30,30 +30,41 @@ public class MediaCacheService {
 
     public MediaFile getMedia(String path){
         try {
-            return OBJECT_MAPPER.readValue(jedis.get(MEDIA_FILE + path), MediaFile.class);
+            String cacheValue = jedis.get(MEDIA_FILE + path);
+            logger.info("Cache response for media get. Key: {} Value: {}");
+            if(cacheValue != null) {
+                return OBJECT_MAPPER.readValue(cacheValue, MediaFile.class);
+            }
         } catch (IOException e){
-            return MediaFile.Builder.newInstance()
-                    .setFileName(PathUtils.getTitle(new File(path).getName()))
-                    .setPath(path)
-                    .build();
+            logger.error("Failure getting media fron cache.", e);
         }
+
+        return MediaFile.Builder.newInstance()
+                .setPath(path)
+                .build();
     }
 
     public Set<String> listFiles(String path) {
         try {
-            return OBJECT_MAPPER.readValue(jedis.get(FILE_LIST + path), Set.class);
+            String cacheValue = jedis.get(FILE_LIST + path);
+            if(cacheValue != null)
+                return OBJECT_MAPPER.readValue(cacheValue, Set.class);
         } catch (IOException e){
             logger.error("Failure unmarshalling file set from cache.", e);
-            return new HashSet<>();
         }
+
+        return new HashSet<>();
     }
 
     public List<MediaFileEvent> getMediaEvents(){
         try {
-            return OBJECT_MAPPER.readValue(jedis.get(MEDIA_EVENTS.name()), List.class);
+            String cacheValue = jedis.get(MEDIA_EVENTS.name());
+            if(cacheValue != null)
+                return OBJECT_MAPPER.readValue(cacheValue, List.class);
         } catch (IOException e){
             logger.error("Failure unmarshalling event list from cache.", e);
-            return new ArrayList<>();
         }
+
+        return new ArrayList<>();
     }
 }
