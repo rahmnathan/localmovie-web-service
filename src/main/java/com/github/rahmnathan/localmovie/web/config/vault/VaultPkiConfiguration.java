@@ -1,4 +1,4 @@
-package com.github.rahmnathan.localmovie.web.config;
+package com.github.rahmnathan.localmovie.web.config.vault;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;

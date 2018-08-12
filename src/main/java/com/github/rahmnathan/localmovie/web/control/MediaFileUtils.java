@@ -10,10 +10,10 @@ import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MediaFileUtils {
+class MediaFileUtils {
     private static final Logger logger = LoggerFactory.getLogger(MediaFileUtils.class.getName());
 
-    public static List<MediaFile> sortMediaFiles(MovieSearchCriteria searchCriteria, List<MediaFile> mediaFiles){
+    static List<MediaFile> sortMediaFiles(MovieSearchCriteria searchCriteria, List<MediaFile> mediaFiles){
         logger.info("Sorting movie list - order: {}", searchCriteria.getOrder());
         if (searchCriteria.getPath().split(File.separator).length > 1) {
             return sortMovieInfoList(mediaFiles, MovieOrder.SEASONS_EPISODES);
@@ -24,7 +24,7 @@ public class MediaFileUtils {
         return mediaFiles;
     }
 
-    public static List<MediaFile> paginateMediaFiles(List<MediaFile> mediaFiles, MovieSearchCriteria searchCriteria){
+    static List<MediaFile> paginateMediaFiles(List<MediaFile> mediaFiles, MovieSearchCriteria searchCriteria){
         logger.info("Paginating movie list - page: {} resultsPerPage: {}", searchCriteria.getPage(), searchCriteria.getItemsPerPage());
         return mediaFiles.stream()
                 .skip(searchCriteria.getPage() * searchCriteria.getItemsPerPage())
@@ -32,7 +32,7 @@ public class MediaFileUtils {
                 .collect(Collectors.toList());
     }
 
-    public static List<MediaFile> removePosterImages(List<MediaFile> mediaFiles){
+    static List<MediaFile> removePosterImages(List<MediaFile> mediaFiles){
         logger.info("Removing images for webapp");
         return mediaFiles.stream()
                 .map(MediaFile.Builder::copyWithNoImage)

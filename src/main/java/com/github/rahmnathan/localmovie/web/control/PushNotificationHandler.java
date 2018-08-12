@@ -1,6 +1,7 @@
 package com.github.rahmnathan.localmovie.web.control;
 
 import com.github.rahmnathan.localmovie.domain.AndroidPushClient;
+import com.github.rahmnathan.localmovie.web.repository.AndroidPushTokenRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

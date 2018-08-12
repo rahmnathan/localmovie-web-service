@@ -1,4 +1,4 @@
-package com.github.rahmnathan.localmovie.web.control;
+package com.github.rahmnathan.localmovie.web.repository;
 
 import com.github.rahmnathan.localmovie.domain.AndroidPushClient;
 import org.springframework.data.repository.CrudRepository;
