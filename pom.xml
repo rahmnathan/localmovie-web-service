@@ -19,7 +19,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <springfox.version>2.7.0</springfox.version>
-        <kotlin.version>1.2.31</kotlin.version>
     </properties>
 
     <dependencies>
