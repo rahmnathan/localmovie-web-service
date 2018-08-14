@@ -11,3 +11,14 @@ The following diagram is an attempt to show the components and data-flow of the 
 services for this project.
 
 ![Imgur](https://i.imgur.com/Ni3fXd7.png)
+
+<h2>localmovie-web-service</h2>
+
+The web-service component contains all the endpoints needed for client interaction 
+(other than authentication which is provided by Keycloak). The endpoints include:
+
+1) Retrieving media metadata (includes sorting and pagination).
+2) Retrieving media count to support pagination.
+3) Retrieving media events.
+4) Retrieve media poster.
+5) Stream media.
