@@ -22,15 +22,9 @@
   ],
   "keycloak.ssl-required": "external",
   "logging.pattern.level": "%5p %mdc",
-  "media.path": "/opt/localmovies/data/internal/LocalMedia/,/opt/localmovies/data/external1/LocalMedia/",
+  "media.manager.url": "http://localmovie-media-manager:8449",
+  "media.path": "/opt/localmovie-web/data/internal/LocalMedia/,/opt/localmovie-web/data/external1/LocalMedia/",
   "server.port": "8450",
   "server.servlet-path": "/",
-  "server.ssl.enabled": true,
-  "spring.datasource.password": "",
-  "spring.datasource.url": "jdbc:postgresql://postgres-postgresql.default:5432/localmovies",
-  "spring.datasource.username": "localmovies",
-  "spring.jpa.database-platform": "org.hibernate.dialect.PostgreSQLDialect",
-  "spring.jpa.hibernate.ddl-auto": "validate",
-  "spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation": true,
-  "spring.jpa.show-sql": "false"
+  "server.ssl.enabled": true
 }
