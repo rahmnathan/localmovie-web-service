@@ -135,8 +135,10 @@ public class MovieResource {
         MDC.put(TRANSACTION_ID, UUID.randomUUID().toString());
         EVENTS_COUNTER.increment();
 
-        logger.info("Request for events since: {}", epoch);
-        List<MediaFileEvent> events = metadataService.getMediaFileEvents(LocalDateTime.ofInstant(Instant.ofEpochMilli(epoch), ZoneId.systemDefault()));
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(epoch), ZoneId.systemDefault());
+        logger.info("Request for events since: {}", localDateTime);
+        List<MediaFileEvent> events = metadataService.getMediaFileEvents(localDateTime);
+        logger.info("Events response. Time: {} EventList: {}", localDateTime, events);
 
         MDC.clear();
         return ResponseEntity.ok(events);

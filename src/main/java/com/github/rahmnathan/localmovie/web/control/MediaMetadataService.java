@@ -56,8 +56,8 @@ public class MediaMetadataService {
 
     public List<MediaFileEvent> getMediaFileEvents(LocalDateTime dateTime){
         return cacheService.getMediaEvents().stream()
-                .sorted(Comparator.comparing(MediaFileEvent::getTimestamp))
                 .filter(mediaFileEvent -> mediaFileEvent.getTimestamp().isAfter(dateTime))
+                .sorted(Comparator.comparing(MediaFileEvent::getTimestamp))
                 .collect(Collectors.toList());
     }
 }
