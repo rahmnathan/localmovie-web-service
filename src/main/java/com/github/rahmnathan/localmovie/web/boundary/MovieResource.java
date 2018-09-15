@@ -101,12 +101,14 @@ public class MovieResource {
         movie.addView();
         logger.info("Received streaming request - {}", path);
         for(String mediaPath : mediaPaths) {
+            logger.info("Checking if mediaPath {} contains requested path {}", mediaPath, path);
             if (new File(mediaPath + path).exists()) {
                 logger.info("Streaming - {}{}", mediaPath, path);
                 response.setHeader(HttpHeaders.CONTENT_TYPE, "video/mp4");
                 fileSender.serveResource(Paths.get(mediaPath + path), request, response);
                 break;
             }
+            logger.warn("Path not found in mediaPaths: {}", path);
         }
         MDC.clear();
     }
