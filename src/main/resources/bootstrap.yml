@@ -1,7 +1,7 @@
 vault.pki:
   enabled: false
   commonName: localmovie-web
-  role: localmovie-web
+  role: localmovies
 
 spring:
   application.name: localmovie-web
