@@ -1,4 +1,4 @@
-FROM library/openjdk:10
+FROM library/openjdk:11-jre
 
 RUN mkdir /opt/localmovie-web && mkdir /opt/localmovie-web/config
 
