@@ -3,7 +3,7 @@ FROM library/openjdk:11-jre
 RUN mkdir /opt/localmovie-web && mkdir /opt/localmovie-web/config
 
 ADD src/main/resources/vault.cer /opt/localmovie-web/vault.cer
-RUN keytool -importcert -file /opt/localmovie-web/vault.cer -keystore /usr/lib/jvm/java-10-openjdk-amd64/lib/security/cacerts -storepass changeit -noprompt -alias "vault"
+RUN keytool -importcert -file /opt/localmovie-web/vault.cer -keystore /usr/lib/jvm/java-11-openjdk-amd64/lib/security/cacerts -storepass changeit -noprompt -alias "vault"
 
 ARG JAR_FILE
 ADD target/$JAR_FILE /opt/localmovie-web/localmovie-web.jar
