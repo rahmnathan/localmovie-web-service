@@ -6,7 +6,6 @@ module local.movie.web.service {
     requires org.apache.httpcomponents.httpcore;
     requires javax.servlet.api;
     requires micrometer.core;
-    requires localmovie.media.manager.client;
     requires spring.beans;
     requires camel.core;
     requires spring.context;
