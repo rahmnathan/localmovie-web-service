@@ -22,7 +22,6 @@
   ],
   "keycloak.ssl-required": "external",
   "logging.pattern.level": "%5p %mdc",
-  "media.manager.url": "http://localmovie-media-manager:8449",
   "media.path": "/opt/localmovie-web/data/internal/LocalMedia/,/opt/localmovie-web/data/external1/LocalMedia/",
   "server.port": "8450",
   "server.servlet-path": "/",

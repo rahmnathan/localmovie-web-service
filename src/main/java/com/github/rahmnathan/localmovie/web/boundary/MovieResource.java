@@ -1,14 +1,10 @@
 package com.github.rahmnathan.localmovie.web.boundary;
 
-import com.github.rahmnathan.localmovie.client.boundary.MediaManagerClient;
-import com.github.rahmnathan.localmovie.client.config.MediaClientConfig;
 import com.github.rahmnathan.localmovie.domain.*;
 import com.github.rahmnathan.localmovie.web.control.FileSender;
 import com.github.rahmnathan.localmovie.web.control.MediaMetadataService;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Metrics;
-import org.apache.camel.CamelContext;
-import org.apache.camel.ProducerTemplate;
 import org.apache.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +30,6 @@ public class MovieResource {
     private final Logger logger = LoggerFactory.getLogger(MovieResource.class.getName());
     private static final String TRANSACTION_ID = "TransactionID";
     private final FileSender fileSender = new FileSender();
-    private final MediaManagerClient mediaManagerClient;
     private final MediaMetadataService metadataService;
     private final String[] mediaPaths;
 
@@ -44,9 +39,7 @@ public class MovieResource {
     private static final Counter STREAM_COUNTER = Metrics.counter("localmovie.stream.request.counter");
     private static final Counter EVENTS_COUNTER = Metrics.counter("localmovie.events.request.counter");
 
-    public MovieResource(MediaMetadataService metadataService, ProducerTemplate template, CamelContext context,
-                         @Value("${media.path}") String[] mediaPaths, @Value("${media.manager.url}") String mediaManagerUrl){
-        this.mediaManagerClient = new MediaManagerClient(template, context, new MediaClientConfig(mediaManagerUrl));
+    public MovieResource(MediaMetadataService metadataService, @Value("${media.path}") String[] mediaPaths){
         this.metadataService = metadataService;
         this.mediaPaths = mediaPaths;
     }
@@ -56,11 +49,6 @@ public class MovieResource {
         MDC.put(TRANSACTION_ID, UUID.randomUUID().toString());
         MOVIES_COUNTER.increment();
         logger.info("Received request: {}", movieInfoRequest.toString());
-
-        if(movieInfoRequest.getPushToken() != null && movieInfoRequest.getDeviceId() != null){
-            AndroidPushClient pushClient = new AndroidPushClient(movieInfoRequest.getDeviceId(), movieInfoRequest.getPushToken());
-            mediaManagerClient.addPushToken(pushClient);
-        }
 
         MovieSearchCriteria searchCriteria = new MovieSearchCriteria(movieInfoRequest.getPath(), movieInfoRequest.getPage(),
                 movieInfoRequest.getResultsPerPage(), movieInfoRequest.getClient(), movieInfoRequest.getOrder());
