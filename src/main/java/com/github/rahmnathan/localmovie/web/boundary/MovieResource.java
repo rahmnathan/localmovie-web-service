@@ -6,10 +6,8 @@ import com.github.rahmnathan.localmovie.web.control.MediaMetadataService;
 import org.apache.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,12 +19,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Base64;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 public class MovieResource {
     private final Logger logger = LoggerFactory.getLogger(MovieResource.class.getName());
-    private static final String TRANSACTION_ID = "TransactionID";
     private final FileSender fileSender = new FileSender();
     private final MediaMetadataService metadataService;
     private final String[] mediaPaths;
@@ -38,7 +34,6 @@ public class MovieResource {
 
     @PostMapping(value = "/localmovies/v2/movies", produces=MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<MediaFile> getMovies(@RequestBody MovieInfoRequest movieInfoRequest, HttpServletResponse response) {
-        MDC.put(TRANSACTION_ID, UUID.randomUUID().toString());
         logger.info("Received request: {}", movieInfoRequest.toString());
 
         MovieSearchCriteria searchCriteria = new MovieSearchCriteria(movieInfoRequest.getPath(), movieInfoRequest.getPage(),
@@ -51,19 +46,17 @@ public class MovieResource {
         List<MediaFile> movieInfoList = metadataService.loadMediaFileList(searchCriteria);
 
         logger.info("Returning {} movies", movieInfoList.size());
-        MDC.clear();
         return movieInfoList;
     }
 
     @GetMapping(value = "/localmovies/v2/movies/count")
     public void getMovieCount(@RequestParam(value = "path") String path, HttpServletResponse response){
-        MDC.put(TRANSACTION_ID, UUID.randomUUID().toString());
         logger.info("Received count request for path - {}", path);
 
         int count = metadataService.loadMediaListLength(path);
+
         logger.info("Returning count of - {}", count);
         response.setHeader("Count", String.valueOf(count));
-        MDC.clear();
     }
 
     /**
@@ -71,7 +64,6 @@ public class MovieResource {
      */
     @GetMapping(value = "/localmovies/v2/movie/stream.mp4", produces = "video/mp4")
     public void streamVideo(@RequestParam("path") String path, HttpServletResponse response, HttpServletRequest request) {
-        MDC.put(TRANSACTION_ID, UUID.randomUUID().toString());
         response.setHeader("Access-Control-Allow-Origin", "*");
 
         MediaFile movie = metadataService.loadSingleMediaFile(path);
@@ -87,7 +79,6 @@ public class MovieResource {
             }
             logger.warn("Path not found in mediaPaths: {}", path);
         }
-        MDC.clear();
     }
 
     /**
@@ -95,29 +86,27 @@ public class MovieResource {
      * @return - Poster image for specified video file
      */
     @GetMapping(path = "/localmovies/v2/movie/poster")
-    public ResponseEntity<byte[]> getPoster(@RequestParam("path") String path) {
-        MDC.put(TRANSACTION_ID, UUID.randomUUID().toString());
+    public byte[] getPoster(@RequestParam("path") String path) {
         logger.info("Streaming poster - {}", path);
 
         String image = metadataService.loadSingleMediaFile(path).getMovie().getImage();
-        if(image == null)
-            return ResponseEntity.ok(new byte[0]);
 
-        byte[] poster = Base64.getDecoder().decode(image);
-        MDC.clear();
-        return ResponseEntity.ok(poster);
+        return image == null ? new byte[0] : Base64.getDecoder().decode(image);
     }
 
+    /**
+     *
+     * @param epoch - Timestamp to collect events since
+     * @return - List of MediaFileEvents
+     */
     @GetMapping(path = "/localmovies/v2/movie/events")
-    public ResponseEntity<List<MediaFileEvent>> getPoster(@RequestParam("timestamp") Long epoch) {
-        MDC.put(TRANSACTION_ID, UUID.randomUUID().toString());
-
+    public List<MediaFileEvent> getPoster(@RequestParam("timestamp") Long epoch) {
         LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(epoch), ZoneId.systemDefault());
         logger.info("Request for events since: {}", localDateTime);
-        List<MediaFileEvent> events = metadataService.getMediaFileEvents(localDateTime);
-        logger.info("Events response. Time: {} EventList: {}", localDateTime, events);
 
-        MDC.clear();
-        return ResponseEntity.ok(events);
+        List<MediaFileEvent> events = metadataService.getMediaFileEvents(localDateTime);
+
+        logger.info("Events response. Time: {} EventList: {}", localDateTime, events);
+        return events;
     }
 }
