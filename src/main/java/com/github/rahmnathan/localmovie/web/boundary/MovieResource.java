@@ -100,7 +100,7 @@ public class MovieResource {
      * @return - List of MediaFileEvents
      */
     @GetMapping(path = "/localmovies/v2/movie/events")
-    public List<MediaFileEvent> getPoster(@RequestParam("timestamp") Long epoch) {
+    public List<MediaFileEvent> getEvents(@RequestParam("timestamp") Long epoch) {
         LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(epoch), ZoneId.systemDefault());
         logger.info("Request for events since: {}", localDateTime);
 
