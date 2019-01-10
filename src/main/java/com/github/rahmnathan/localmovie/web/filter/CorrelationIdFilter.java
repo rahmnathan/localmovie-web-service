@@ -1,41 +1,26 @@
 package com.github.rahmnathan.localmovie.web.filter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 public class CorrelationIdFilter implements Filter {
-    private final Logger logger = LoggerFactory.getLogger(CorrelationIdFilter.class);
     private static final String X_CORRELATION_ID = "x-correlation-id";
+    private static final String CLIENT_ADDRESS = "client-address";
 
     @Override
-    public void init(FilterConfig filterConfig) {
-    }
-
-    @Override
-    public void destroy() {
-    }
-
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-            throws IOException, ServletException {
-
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        String correlationId = httpServletRequest.getHeader(X_CORRELATION_ID);
 
-        if (correlationId == null) {
-            correlationId = UUID.randomUUID().toString();
-            logger.info("No correlationId found in Header. Generated : {}", correlationId);
-        } else {
-            logger.info("Found correlationId in Header : {}", correlationId);
-        }
+        Optional<String> correlationId = Optional.ofNullable(httpServletRequest.getHeader(X_CORRELATION_ID));
+        MDC.put(X_CORRELATION_ID, correlationId.orElse(UUID.randomUUID().toString()));
 
-        MDC.put(X_CORRELATION_ID, correlationId);
+        String clientAddress = ((HttpServletRequest) servletRequest).getHeader("X-FORWARDED-FOR");
+        MDC.put(CLIENT_ADDRESS, clientAddress);
 
         filterChain.doFilter(httpServletRequest, servletResponse);
 

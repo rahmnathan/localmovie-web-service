@@ -1,9 +1,8 @@
 package com.github.rahmnathan.localmovie.web.control;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.github.rahmnathan.localmovie.domain.MediaFile;
 import com.github.rahmnathan.localmovie.domain.MediaFileEvent;
 import org.slf4j.Logger;
@@ -22,15 +21,13 @@ import static com.github.rahmnathan.localmovie.domain.CachePrefix.MEDIA_FILE;
 @Service
 public class MediaCacheService {
     private final Logger logger = LoggerFactory.getLogger(MediaCacheService.class);
-    private static final TypeReference<List<MediaFileEvent>> EVENT_LIST_TYPE = new TypeReference<List<MediaFileEvent>>() {};
-    private final ObjectMapper objectMapper;
+    private static final ObjectMapper MAPPER = new ObjectMapper().registerModule(new JavaTimeModule());
+    private static final CollectionType EVENT_LIST_TYPE = MAPPER.getTypeFactory().constructCollectionType(List.class, MediaFileEvent.class);
+    private static final CollectionType FILE_SET_TYPE = MAPPER.getTypeFactory().constructCollectionType(Set.class, String.class);
     private final JedisPool jedisPool;
 
     public MediaCacheService(JedisPool jedisPool) {
         this.jedisPool = jedisPool;
-        this.objectMapper = new ObjectMapper()
-                .registerModule(new ParameterNamesModule())
-                .registerModule(new JavaTimeModule());
     }
 
     public MediaFile getMedia(String path){
@@ -38,7 +35,7 @@ public class MediaCacheService {
             String cacheValue = jedis.get(MEDIA_FILE + path);
             logger.debug("Cache response for media get. Key: {} Value: {}", MEDIA_FILE + path, cacheValue);
             if(cacheValue != null) {
-                return objectMapper.readValue(cacheValue, MediaFile.class);
+                return MAPPER.readValue(cacheValue, MediaFile.class);
             }
         } catch (IOException e){
             logger.error("Failure getting media fron cache.", e);
@@ -54,7 +51,7 @@ public class MediaCacheService {
             String cacheValue = jedis.get(FILE_LIST + path);
             logger.debug("Cache response for file list get. Key: {} Value: {}", FILE_LIST + path, cacheValue);
             if(cacheValue != null)
-                return objectMapper.readValue(cacheValue, Set.class);
+                return MAPPER.readValue(cacheValue, FILE_SET_TYPE);
         } catch (IOException e){
             logger.error("Failure unmarshalling file set from cache.", e);
         }
@@ -67,7 +64,7 @@ public class MediaCacheService {
             String cacheValue = jedis.get(MEDIA_EVENTS.name());
             logger.debug("Cache response for events get. Key: {} Value: {}", MEDIA_EVENTS, cacheValue);
             if(cacheValue != null)
-                return objectMapper.readValue(cacheValue, EVENT_LIST_TYPE);
+                return MAPPER.readValue(cacheValue, EVENT_LIST_TYPE);
         } catch (IOException e){
             logger.error("Failure unmarshalling event list from cache.", e);
         }

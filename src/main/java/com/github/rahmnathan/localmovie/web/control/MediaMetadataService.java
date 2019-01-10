@@ -4,8 +4,6 @@ import com.github.rahmnathan.localmovie.domain.MediaFile;
 import com.github.rahmnathan.localmovie.domain.MediaFileEvent;
 import com.github.rahmnathan.localmovie.domain.MovieClient;
 import com.github.rahmnathan.localmovie.domain.MovieSearchCriteria;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,7 +18,6 @@ import static com.github.rahmnathan.localmovie.web.control.MediaFileUtils.sortMe
 
 @Service
 public class MediaMetadataService {
-    private final Logger logger = LoggerFactory.getLogger(MediaMetadataService.class);
     private final MediaCacheService cacheService;
 
     public MediaMetadataService(MediaCacheService cacheService) {
