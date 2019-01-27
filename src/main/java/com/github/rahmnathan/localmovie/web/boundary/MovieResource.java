@@ -32,7 +32,7 @@ public class MovieResource {
         this.mediaPaths = mediaPaths;
     }
 
-    @PostMapping(value = "/localmovies/v2/movies", produces=MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/localmovie/v2/media", produces=MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<MediaFile> getMovies(@RequestBody MovieInfoRequest movieInfoRequest, HttpServletResponse response) {
         logger.info("Received request: {}", movieInfoRequest.toString());
 
@@ -49,7 +49,7 @@ public class MovieResource {
         return movieInfoList;
     }
 
-    @GetMapping(value = "/localmovies/v2/movies/count")
+    @GetMapping(value = "/localmovie/v2/media/count")
     public void getMovieCount(@RequestParam(value = "path") String path, HttpServletResponse response){
         logger.info("Received count request for path - {}", path);
 
@@ -62,7 +62,7 @@ public class MovieResource {
     /**
      * @param path - Path to video file to stream
      */
-    @GetMapping(value = "/localmovies/v2/movie/stream.mp4", produces = "video/mp4")
+    @GetMapping(value = "/localmovie/v2/media/stream.mp4", produces = "video/mp4")
     public void streamVideo(@RequestParam("path") String path, HttpServletResponse response, HttpServletRequest request) {
         response.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -85,7 +85,7 @@ public class MovieResource {
      * @param path - Path to video file
      * @return - Poster image for specified video file
      */
-    @GetMapping(path = "/localmovies/v2/movie/poster")
+    @GetMapping(path = "/localmovie/v2/media/poster")
     public byte[] getPoster(@RequestParam("path") String path) {
         logger.info("Streaming poster - {}", path);
 
@@ -99,7 +99,7 @@ public class MovieResource {
      * @param epoch - Timestamp to collect events since
      * @return - List of MediaFileEvents
      */
-    @GetMapping(path = "/localmovies/v2/movie/events")
+    @GetMapping(path = "/localmovie/v2/media/events")
     public List<MediaFileEvent> getEvents(@RequestParam("timestamp") Long epoch) {
         LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(epoch), ZoneId.systemDefault());
         logger.info("Request for events since: {}", localDateTime);
