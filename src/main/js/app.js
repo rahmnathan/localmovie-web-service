@@ -1,7 +1,8 @@
 'use strict';
 
-const React = require('react');
-const ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { MediaList } from './MediaList';
 
 const movieRequest = {
     path: 'Movies',
@@ -33,48 +34,7 @@ class App extends React.Component {
 
     render() {
         return (
-            <MovieList media={this.state.media}/>
-        )
-    }
-}
-
-class MovieList extends React.Component {
-    render() {
-        const mediaList = this.props.media.map(media =>
-            <Movie key={media.path} media={media}/>
-        );
-        return (
-            <div>
-                {mediaList}
-            </div>
-        )
-    }
-}
-
-const movieStyle = {
-    borderStyle: 'solid',
-    borderColor: '#2b2b2b',
-    backgroundColor: 'rgb(21, 21, 30)',
-    maxWidth: 150,
-    padding: 5,
-    height: 295,
-    display: 'inline-table'
-};
-
-const textStyle = {
-    color: 'white',
-    fontSize: 15,
-    fontWeight: 'bold',
-    wordWrap: 'normal',
-    margin: 2
-};
-
-class Movie extends React.Component {
-    render() {
-        return (
-            <div style={movieStyle}>
-                <p style={textStyle}>{this.props.media.fileName}</p>
-            </div>
+            <MediaList media={this.state.media}/>
         )
     }
 }
