@@ -3,6 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { MediaList } from './MediaList';
+import {VideoPlayer} from "./VideoPlayer";
 
 const movieRequest = {
     path: 'Movies',
@@ -15,7 +16,12 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {media: []};
+        this.state = {media: [], currentMedia: null};
+        this.playVideo = this.playVideo.bind(this);
+    }
+
+    playVideo(media) {
+        this.setState({currentMedia: media})
     }
 
     componentDidMount() {
@@ -34,7 +40,10 @@ class App extends React.Component {
 
     render() {
         return (
-            <MediaList media={this.state.media}/>
+            <div>
+                <VideoPlayer media={this.state.currentMedia}/>
+                <MediaList media={this.state.media} playVideo={this.playVideo}/>
+            </div>
         )
     }
 }

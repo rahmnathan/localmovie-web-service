@@ -34,7 +34,7 @@ const posterStyle = {
 
 const posterBasePath = '/localmovie/v2/media/poster?path=';
 
-const buildPosterUri = function (media) {
+export const buildPosterUri = function (media) {
     if(media.movie.image === 'noImage'){
         return 'noPicture.gif';
     } else {
@@ -43,9 +43,18 @@ const buildPosterUri = function (media) {
 };
 
 export class Media extends React.Component {
+    constructor(props) {
+        super(props);
+        this.updateSelectedMedia = this.updateSelectedMedia.bind(this);
+    }
+
+    updateSelectedMedia() {
+        this.props.selectMedia(this.props.media);
+    }
+
     render() {
         return (
-            <div style={movieStyle}>
+            <div style={movieStyle} onClick={this.updateSelectedMedia}>
                 <img src={buildPosterUri(this.props.media)} alt='noPicture.gif' style={posterStyle}/>
                 <p style={titleStyle}>{this.props.media.movie.title}</p>
                 <p style={textStyle}>Year: {this.props.media.movie.releaseYear}</p>
