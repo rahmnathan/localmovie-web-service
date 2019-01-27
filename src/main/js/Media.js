@@ -7,7 +7,8 @@ const movieStyle = {
     maxWidth: 150,
     padding: 5,
     height: 295,
-    display: 'inline-table'
+    display: 'inline-table',
+    justifyItems: 'center'
 };
 
 const textStyle = {
@@ -18,11 +19,29 @@ const textStyle = {
     margin: 2
 };
 
+const posterStyle = {
+    height: 200,
+    width: 125
+};
+
+const posterUrl = '/localmovie/v2/media/poster?path=';
+
+const buildPosterUri = function (media) {
+    if(media.movie.image === 'noImage'){
+        return 'noPicture.gif';
+    } else {
+        return posterUrl + encodeURI(media.path);
+    }
+};
+
 export class Media extends React.Component {
     render() {
         return (
             <div style={movieStyle}>
-                <p style={textStyle}>{this.props.media.fileName}</p>
+                <img src={buildPosterUri(this.props.media)} alt='noPicture.gif' style={posterStyle}/>
+                <p style={textStyle}>{this.props.media.movie.title}</p>
+                <p style={textStyle}>{this.props.media.movie.releaseYear}</p>
+                <p style={textStyle}>{this.props.media.movie.imdbRating}</p>
             </div>
         )
     }

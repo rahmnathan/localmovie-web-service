@@ -1,7 +1,7 @@
 {
-  "name": "spring-data-rest-and-reactjs",
+  "name": "localmovies",
   "version": "0.1.0",
-  "description": "Demo of ReactJS + Spring Data REST",
+  "description": "LocalMovies",
   "keywords": [
     "rest",
     "hateoas",
