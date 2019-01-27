@@ -7,8 +7,7 @@ const movieStyle = {
     maxWidth: 150,
     padding: 5,
     height: 295,
-    display: 'inline-table',
-    justifyItems: 'center'
+    display: 'inline-table'
 };
 
 const textStyle = {
@@ -16,7 +15,8 @@ const textStyle = {
     fontSize: 15,
     fontWeight: 'bold',
     wordWrap: 'normal',
-    margin: 2
+    margin: 2,
+    textAlign: 'center'
 };
 
 const posterStyle = {
@@ -24,13 +24,13 @@ const posterStyle = {
     width: 125
 };
 
-const posterUrl = '/localmovie/v2/media/poster?path=';
+const posterBasePath = '/localmovie/v2/media/poster?path=';
 
 const buildPosterUri = function (media) {
     if(media.movie.image === 'noImage'){
         return 'noPicture.gif';
     } else {
-        return posterUrl + encodeURI(media.path);
+        return posterBasePath + encodeURI(media.path);
     }
 };
 
