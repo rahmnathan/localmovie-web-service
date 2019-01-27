@@ -12,8 +12,16 @@ const movieStyle = {
 
 const textStyle = {
     color: 'white',
-    fontSize: 15,
+    fontSize: 14,
+    wordWrap: 'normal',
+    margin: 2,
+    textAlign: 'center'
+};
+
+const titleStyle = {
     fontWeight: 'bold',
+    color: 'white',
+    fontSize: 16,
     wordWrap: 'normal',
     margin: 2,
     textAlign: 'center'
@@ -39,9 +47,9 @@ export class Media extends React.Component {
         return (
             <div style={movieStyle}>
                 <img src={buildPosterUri(this.props.media)} alt='noPicture.gif' style={posterStyle}/>
-                <p style={textStyle}>{this.props.media.movie.title}</p>
-                <p style={textStyle}>{this.props.media.movie.releaseYear}</p>
-                <p style={textStyle}>{this.props.media.movie.imdbRating}</p>
+                <p style={titleStyle}>{this.props.media.movie.title}</p>
+                <p style={textStyle}>Year: {this.props.media.movie.releaseYear}</p>
+                <p style={textStyle}>IMDB: {this.props.media.movie.imdbRating}</p>
             </div>
         )
     }
