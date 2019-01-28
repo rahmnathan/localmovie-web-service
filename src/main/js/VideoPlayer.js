@@ -12,14 +12,25 @@ export const viewingVideos = function (path) {
     return (path.includes("Movies") && path.split("/").length === 2) || path.split("/").length === 4;
 };
 
+const videoPlayerStyle = {
+    position: 'absolute',
+    height: '90%',
+    width: '90%',
+    top: 0
+};
+
 export class VideoPlayer extends React.Component {
     render() {
         let component = null;
 
-        if(this.props.media !== null){
-            if(viewingVideos(this.props.media.path)) {
-                component = <Player poster={buildPosterUri(this.props.media)}
-                                    src={buildVideoPath(this.props.media)}/>;
+        if (this.props.media !== null) {
+            if (viewingVideos(this.props.media.path)) {
+                component = (
+                    <div style={videoPlayerStyle}>
+                        <Player poster={buildPosterUri(this.props.media)}
+                                src={buildVideoPath(this.props.media)}/>
+                    </div>
+                );
             }
         }
 

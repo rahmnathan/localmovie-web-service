@@ -79,9 +79,9 @@ class App extends React.Component {
     render() {
         return (
             <div style={layoutProps}>
-                <VideoPlayer media={this.state.currentMedia}/>
                 <ControlBar filterMedia={this.filterMedia} selectCategory={this.selectCategory}/>
                 <MediaList media={this.state.media} selectMedia={this.selectMedia}/>
+                <VideoPlayer media={this.state.currentMedia}/>
             </div>
         )
     }
