@@ -16,7 +16,9 @@ const videoPlayerStyle = {
     position: 'absolute',
     height: '90%',
     width: '90%',
-    top: 0
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)'
 };
 
 export class VideoPlayer extends React.Component {
