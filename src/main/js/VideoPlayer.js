@@ -18,7 +18,7 @@ export class VideoPlayer extends React.Component {
 
         if(this.props.media !== null){
             if(viewingVideos(this.props.media.path)) {
-                component = <Player playsInline poster={buildPosterUri(this.props.media)}
+                component = <Player poster={buildPosterUri(this.props.media)}
                                     src={buildVideoPath(this.props.media)}/>;
             }
         }
