@@ -45,16 +45,16 @@ export const buildPosterUri = function (media) {
 export class Media extends React.Component {
     constructor(props) {
         super(props);
-        this.updateSelectedMedia = this.updateSelectedMedia.bind(this);
+        this.selectMedia = this.selectMedia.bind(this);
     }
 
-    updateSelectedMedia() {
+    selectMedia() {
         this.props.selectMedia(this.props.media);
     }
 
     render() {
         return (
-            <div style={movieStyle} onClick={this.updateSelectedMedia}>
+            <div style={movieStyle} onClick={this.selectMedia}>
                 <img src={buildPosterUri(this.props.media)} alt='noPicture.gif' style={posterStyle}/>
                 <p style={titleStyle}>{this.props.media.movie.title}</p>
                 <p style={textStyle}>Year: {this.props.media.movie.releaseYear}</p>

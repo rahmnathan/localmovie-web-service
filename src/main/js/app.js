@@ -3,46 +3,56 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { MediaList } from './MediaList';
-import {VideoPlayer} from "./VideoPlayer";
+import { VideoPlayer } from './VideoPlayer';
+import { viewingVideos } from "./VideoPlayer";
 
-const movieRequest = {
-    path: 'Movies',
-    client: "WEBAPP",
-    page: 0,
-    resultsPerPage: 1000
+const buildMovieRequest = function (path) {
+    return {
+        path: path,
+        client: "WEBAPP",
+        page: 0,
+        resultsPerPage: 1000
+    }
 };
 
 class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {media: [], currentMedia: null};
-        this.playVideo = this.playVideo.bind(this);
+        this.state = {media: [], currentMedia: null, currentPath: 'Series'};
+        this.selectMedia = this.selectMedia.bind(this);
     }
 
-    playVideo(media) {
-        this.setState({currentMedia: media})
+    selectMedia(media) {
+        this.setState({currentMedia: media, currentPath: media.path});
+        if(!viewingVideos(media.path)){
+            this.loadMedia();
+        }
     }
 
-    componentDidMount() {
+    loadMedia() {
         fetch('/localmovie/v2/media', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(movieRequest)
+            body: JSON.stringify(buildMovieRequest(this.state.currentPath))
         }).then(response => response.json())
             .then(data => {
                 this.setState({media: data})
             });
     }
 
+    componentDidMount() {
+        this.loadMedia();
+    }
+
     render() {
         return (
             <div>
                 <VideoPlayer media={this.state.currentMedia}/>
-                <MediaList media={this.state.media} playVideo={this.playVideo}/>
+                <MediaList media={this.state.media} selectMedia={this.selectMedia}/>
             </div>
         )
     }
