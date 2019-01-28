@@ -1,7 +1,6 @@
 import React from 'react';
 
 const categoryStyle = {
-    display: 'inline-block',
     align: 'center'
 };
 
