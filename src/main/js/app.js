@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import { MediaList } from './MediaList';
 import { VideoPlayer } from './VideoPlayer';
 import { viewingVideos } from "./VideoPlayer";
+import { ControlBar } from './ControlBar';
 
 const buildMovieRequest = function (path) {
     return {
@@ -54,6 +55,7 @@ class App extends React.Component {
     render() {
         return (
             <div>
+                <ControlBar/>
                 <VideoPlayer media={this.state.currentMedia}/>
                 <MediaList media={this.state.media} selectMedia={this.selectMedia}/>
             </div>
