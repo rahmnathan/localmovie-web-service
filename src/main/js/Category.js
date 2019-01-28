@@ -1,7 +1,8 @@
 import React from 'react';
 
 const categoryStyle = {
-    align: 'center'
+    align: 'center',
+    marginTop: 10
 };
 
 export class Category extends React.Component {
