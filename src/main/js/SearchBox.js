@@ -1,12 +1,11 @@
 import React from 'react';
 
-const textStyle = {
+const searchBoxStyle = {
     color: 'white',
     fontSize: 14,
-    wordWrap: 'normal',
-    margin: 2,
+    margin: 'auto',
     textAlign: 'center',
-    float: 'left'
+    display: 'inline-block'
 };
 
 export class SearchBox extends React.Component {
@@ -21,7 +20,7 @@ export class SearchBox extends React.Component {
 
     render() {
         return (
-            <p style={textStyle}>Search by title:<input onChange={this.filterMedia} type='text' /></p>
+            <p style={searchBoxStyle}>Search<input onChange={this.filterMedia} type='text' /></p>
         );
     }
 }

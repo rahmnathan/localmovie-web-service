@@ -2,17 +2,15 @@ import React from 'react';
 import { SearchBox } from "./SearchBox";
 import {Category} from "./Category";
 
-const textStyle = {
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    display: 'block'
+const controlBarStyle = {
+    textAlign: 'center'
 };
 
 export class ControlBar extends React.Component {
 
     render(){
         return (
-            <div style={textStyle}>
+            <div style={controlBarStyle}>
                 <SearchBox filterMedia={this.props.filterMedia}/>
                 <Category selectCategory={this.props.selectCategory}/>
             </div>

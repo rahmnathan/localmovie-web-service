@@ -1,11 +1,8 @@
 import React from 'react';
 
-const movieStyle = {
-    fontSize: 14,
-    wordWrap: 'normal',
-    margin: 2,
-    textAlign: 'center',
-    float: 'left'
+const categoryStyle = {
+    display: 'inline-block',
+    align: 'center'
 };
 
 export class Category extends React.Component {
@@ -20,10 +17,12 @@ export class Category extends React.Component {
 
     render() {
         return (
-            <select style={movieStyle} onChange={this.selectCategory} >
-                <option value='Movies'>Movies</option>
-                <option value='Series'>Series</option>
-            </select>
+            <div style={categoryStyle}>
+                <select onChange={this.selectCategory} >
+                    <option value='Movies'>Movies</option>
+                    <option value='Series'>Series</option>
+                </select>
+            </div>
         );
     }
 }

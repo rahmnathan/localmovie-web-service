@@ -16,6 +16,10 @@ const buildMovieRequest = function (path) {
     }
 };
 
+const layoutProps = {
+    textAlign: 'center'
+};
+
 class App extends React.Component {
 
     constructor(props) {
@@ -74,9 +78,9 @@ class App extends React.Component {
 
     render() {
         return (
-            <div>
-                <ControlBar filterMedia={this.filterMedia} selectCategory={this.selectCategory}/>
+            <div style={layoutProps}>
                 <VideoPlayer media={this.state.currentMedia}/>
+                <ControlBar filterMedia={this.filterMedia} selectCategory={this.selectCategory}/>
                 <MediaList media={this.state.media} selectMedia={this.selectMedia}/>
             </div>
         )
@@ -87,4 +91,3 @@ ReactDOM.render(
     <App/>,
     document.getElementById('react')
 );
-
