@@ -20,8 +20,10 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {media: [], currentMedia: null, currentPath: 'Series'};
+        this.state = {media: [], originalMedia: [], currentMedia: null, currentPath: 'Movies'};
         this.selectMedia = this.selectMedia.bind(this);
+        this.filterMedia = this.filterMedia.bind(this);
+        this.selectCategory = this.selectCategory.bind(this);
     }
 
     selectMedia(media) {
@@ -29,8 +31,15 @@ class App extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if(this.state.currentMedia !== null && !viewingVideos(this.state.currentMedia.path)){
+        if(!viewingVideos(this.state.currentPath) && this.state.currentPath !== prevState.currentPath){
             this.loadMedia();
+        }
+
+    }
+
+    selectCategory(category) {
+        if(category !== null){
+            this.setState({currentPath: category})
         }
     }
 
@@ -44,7 +53,7 @@ class App extends React.Component {
             body: JSON.stringify(buildMovieRequest(this.state.currentPath))
         }).then(response => response.json())
             .then(data => {
-                this.setState({media: data})
+                this.setState({media: data, originalMedia: data})
             });
     }
 
@@ -52,10 +61,21 @@ class App extends React.Component {
         this.loadMedia();
     }
 
+    filterMedia(searchText){
+        if(searchText !== null && searchText !== '') {
+            let filteredMedia = this.state.originalMedia.filter(function (media) {
+                return media.movie.title.toLowerCase().includes(searchText);
+            });
+            this.setState({media: filteredMedia});
+        } else {
+            this.setState({media: this.state.originalMedia});
+        }
+    }
+
     render() {
         return (
             <div>
-                <ControlBar/>
+                <ControlBar filterMedia={this.filterMedia} selectCategory={this.selectCategory}/>
                 <VideoPlayer media={this.state.currentMedia}/>
                 <MediaList media={this.state.media} selectMedia={this.selectMedia}/>
             </div>

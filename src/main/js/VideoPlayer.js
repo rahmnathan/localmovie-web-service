@@ -9,7 +9,7 @@ const buildVideoPath = function (media) {
 };
 
 export const viewingVideos = function (path) {
-    return path.includes("Movies") || path.split("/").length === 4;
+    return (path.includes("Movies") && path.split("/").length === 2) || path.split("/").length === 4;
 };
 
 export class VideoPlayer extends React.Component {
