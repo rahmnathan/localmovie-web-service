@@ -25,7 +25,10 @@ class App extends React.Component {
 
     selectMedia(media) {
         this.setState({currentMedia: media, currentPath: media.path});
-        if(!viewingVideos(media.path)){
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(this.state.currentMedia !== null && !viewingVideos(this.state.currentMedia.path)){
             this.loadMedia();
         }
     }
