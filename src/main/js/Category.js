@@ -4,6 +4,8 @@ const categoryStyle = {
     align: 'center',
     marginTop: 10,
     color: 'white',
+    display: 'inline-block',
+    marginRight: 10
 };
 
 export class Category extends React.Component {

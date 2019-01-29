@@ -4,6 +4,8 @@ const sortStyle = {
     align: 'center',
     marginTop: 10,
     color: 'white',
+    // float: 'left',
+    display: 'inline-block'
 };
 
 export class Sort extends React.Component {

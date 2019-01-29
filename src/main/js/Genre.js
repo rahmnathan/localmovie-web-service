@@ -4,6 +4,8 @@ const genreStyle = {
     align: 'center',
     marginTop: 10,
     color: 'white',
+    marginRight: 10,
+    display: 'inline-block'
 };
 
 export class Genre extends React.Component {
