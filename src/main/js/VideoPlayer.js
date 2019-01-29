@@ -31,6 +31,7 @@ export class VideoPlayer extends React.Component {
                     <div style={videoPlayerStyle}>
                         <Player poster={buildPosterUri(this.props.media)}
                                 src={buildVideoPath(this.props.media)}/>
+                        <button onClick={this.props.stopVideo}>Exit Video</button>
                     </div>
                 );
             }

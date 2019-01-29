@@ -28,6 +28,7 @@ class App extends React.Component {
         this.selectMedia = this.selectMedia.bind(this);
         this.filterMedia = this.filterMedia.bind(this);
         this.selectCategory = this.selectCategory.bind(this);
+        this.stopVideo = this.stopVideo.bind(this);
     }
 
     selectMedia(media) {
@@ -45,6 +46,10 @@ class App extends React.Component {
         if(category !== null){
             this.setState({currentPath: category})
         }
+    }
+
+    stopVideo() {
+        this.setState({currentMedia: null})
     }
 
     loadMedia() {
@@ -81,7 +86,7 @@ class App extends React.Component {
             <div style={layoutProps}>
                 <ControlBar filterMedia={this.filterMedia} selectCategory={this.selectCategory}/>
                 <MediaList media={this.state.media} selectMedia={this.selectMedia}/>
-                <VideoPlayer media={this.state.currentMedia}/>
+                <VideoPlayer stopVideo={this.stopVideo} media={this.state.currentMedia}/>
             </div>
         )
     }
