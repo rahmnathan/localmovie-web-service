@@ -4,7 +4,7 @@ const sortStyle = {
     align: 'center',
     marginTop: 10,
     color: 'white',
-    // float: 'left',
+    marginRight: 10,
     display: 'inline-block'
 };
 
@@ -21,7 +21,7 @@ export class Sort extends React.Component {
     render() {
         return (
             <div style={sortStyle}>
-                Sort:
+                <p style={sortStyle}>Sort: </p>
                 <select onChange={this.selectSort} >
                     <option value='title'>Title</option>
                     <option value='year'>Year</option>

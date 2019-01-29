@@ -21,7 +21,7 @@ export class Category extends React.Component {
     render() {
         return (
             <div style={categoryStyle}>
-                Category:
+                <p style={categoryStyle}>Category: </p>
                 <select onChange={this.selectCategory} >
                     <option value='Movies'>Movies</option>
                     <option value='Series'>Series</option>

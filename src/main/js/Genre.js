@@ -21,7 +21,7 @@ export class Genre extends React.Component {
     render() {
         return (
             <div style={genreStyle}>
-                Genre:
+                <p style={genreStyle}>Genre: </p>
                 <select onChange={this.selectGenre} >
                     <option value='all'>All</option>
                     <option value='action'>Action</option>
