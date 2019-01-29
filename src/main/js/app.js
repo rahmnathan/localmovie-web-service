@@ -30,6 +30,7 @@ class App extends React.Component {
             currentMedia: null,
             genre: 'all',
             searchText: '',
+            sort: 'title',
             currentPath: 'Movies'
         };
 
@@ -38,6 +39,7 @@ class App extends React.Component {
         this.selectCategory = this.selectCategory.bind(this);
         this.stopVideo = this.stopVideo.bind(this);
         this.selectGenre = this.selectGenre.bind(this);
+        this.selectSort = this.selectSort.bind(this);
     }
 
     selectMedia(media) {
@@ -49,7 +51,10 @@ class App extends React.Component {
             if(this.state.currentPath !== prevState.currentPath){
                 this.loadMedia();
                 this.setState({searchText: '', genre: 'all'})
-            } else if(this.state.genre !== prevState.genre || this.state.searchText !== prevState.searchText) {
+            } else if(this.state.genre !== prevState.genre ||
+                this.state.searchText !== prevState.searchText ||
+                this.state.sort !== prevState.sort) {
+
                 let resultMedia = this.state.originalMedia;
 
                 let currentGenre = this.state.genre;
@@ -65,13 +70,37 @@ class App extends React.Component {
 
                 let currentSearchText = this.state.searchText;
                 if(currentSearchText !== null && currentSearchText !== ''){
-                    resultMedia = this.state.originalMedia.filter(function (media) {
+                    resultMedia = resultMedia.filter(function (media) {
                         return media.movie.title.toLowerCase().includes(currentSearchText);
+                    });
+                }
+
+                let currentSort = this.state.sort;
+                if(currentSort !== null) {
+                    resultMedia = resultMedia.sort(function (media1, media2) {
+                        switch (currentSort) {
+                            case 'title':
+                                return media1.movie.title > media2.movie.title;
+                            case 'year':
+                                return media1.movie.releaseYear < media2.movie.releaseYear;
+                            case 'added':
+                                return media1.created < media2.created;
+                            case 'rating':
+                                return media1.movie.imdbRating < media2.movie.imdbRating;
+                            default:
+                                return true;
+                        }
                     });
                 }
 
                 this.setState({media: resultMedia})
             }
+        }
+    }
+
+    selectSort(sort){
+        if(sort !== null){
+            this.setState({sort: sort})
         }
     }
 
@@ -114,7 +143,7 @@ class App extends React.Component {
     render() {
         return (
             <div style={layoutProps}>
-                <ControlBar selectGenre={this.selectGenre} filterMedia={this.filterMedia} selectCategory={this.selectCategory}/>
+                <ControlBar selectSort={this.selectSort} selectGenre={this.selectGenre} filterMedia={this.filterMedia} selectCategory={this.selectCategory}/>
                 <MediaList media={this.state.media} selectMedia={this.selectMedia}/>
                 <VideoPlayer stopVideo={this.stopVideo} media={this.state.currentMedia}/>
             </div>

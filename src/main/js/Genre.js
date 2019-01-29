@@ -1,6 +1,6 @@
 import React from 'react';
 
-const categoryStyle = {
+const genreStyle = {
     align: 'center',
     marginTop: 10,
     color: 'white',
@@ -18,7 +18,7 @@ export class Genre extends React.Component {
 
     render() {
         return (
-            <div style={categoryStyle}>
+            <div style={genreStyle}>
                 Genre:
                 <select onChange={this.selectGenre} >
                     <option value='all'>All</option>
