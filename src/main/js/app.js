@@ -16,6 +16,17 @@ const buildMovieRequest = function (path) {
     }
 };
 
+const backgroundTintStyle = {
+    zIndex: -1,
+    height: '100%',
+    width: '100%',
+    position: 'fixed',
+    overflow: 'auto',
+    top: 0,
+    left: 0,
+    background: 'rgba(0, 0, 0, 0.7)'
+};
+
 const layoutProps = {
     textAlign: 'center'
 };
@@ -98,6 +109,19 @@ class App extends React.Component {
         }
     }
 
+    buildPage(media) {
+        if(media === null || !viewingVideos(media.path)){
+            return (
+                <div>
+                    <ControlBar selectSort={this.selectSort} selectGenre={this.selectGenre} filterMedia={this.filterMedia} selectCategory={this.selectCategory}/>
+                    <MediaList media={this.state.media} selectMedia={this.selectMedia}/>
+                </div>
+            );
+        } else {
+            return <div style={backgroundTintStyle}/>;
+        }
+    };
+
     selectSort(sort){
         if(sort !== null){
             this.setState({sort: sort})
@@ -141,11 +165,11 @@ class App extends React.Component {
     }
 
     render() {
+        let page = this.buildPage(this.state.currentMedia);
         return (
             <div style={layoutProps}>
-                <ControlBar selectSort={this.selectSort} selectGenre={this.selectGenre} filterMedia={this.filterMedia} selectCategory={this.selectCategory}/>
-                <MediaList media={this.state.media} selectMedia={this.selectMedia}/>
                 <VideoPlayer stopVideo={this.stopVideo} media={this.state.currentMedia}/>
+                {page}
             </div>
         )
     }

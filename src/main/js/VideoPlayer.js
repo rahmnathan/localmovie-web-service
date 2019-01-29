@@ -21,6 +21,12 @@ const videoPlayerStyle = {
     transform: 'translate(-50%, -50%)'
 };
 
+const buttonStyle = {
+    color: 'gray',
+    backgroundColor: 'black',
+    borderColor: 'black'
+};
+
 export class VideoPlayer extends React.Component {
     render() {
         let component = null;
@@ -31,7 +37,7 @@ export class VideoPlayer extends React.Component {
                     <div style={videoPlayerStyle}>
                         <Player poster={buildPosterUri(this.props.media)}
                                 src={buildVideoPath(this.props.media)}/>
-                        <button onClick={this.props.stopVideo}>Exit Video</button>
+                        <button style={buttonStyle} onClick={this.props.stopVideo}>Exit Video</button>
                     </div>
                 );
             }
