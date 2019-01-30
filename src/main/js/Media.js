@@ -38,7 +38,7 @@ export const buildPosterUri = function (media) {
     if(media.movie.image === 'noImage'){
         return 'noPicture.gif';
     } else {
-        return posterBasePath + encodeURI(media.path);
+        return posterBasePath + encodeURIComponent(media.path);
     }
 };
 

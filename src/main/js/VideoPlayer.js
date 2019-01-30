@@ -5,7 +5,7 @@ import { buildPosterUri } from "./Media";
 const videoBaseUri = 'localmovie/v2/media/stream.mp4?path=';
 
 const buildVideoPath = function (media) {
-    return videoBaseUri + encodeURI(media.path);
+    return videoBaseUri + encodeURIComponent(media.path);
 };
 
 export const viewingVideos = function (path) {
