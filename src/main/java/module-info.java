@@ -19,5 +19,4 @@ module local.movie.web.service {
     requires spring.cloud.vault.config;
     requires jackson.annotations;
     requires spring.boot.autoconfigure;
-
 }
