@@ -20,6 +20,3 @@ services:
     environment:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: pw123
-#      KEYCLOAK_IMPORT: /tmp/localmovies-realm.json
-#    volumes:
-#      - "/home/nathan/development/workspaces/docker/image-build-files/keycloak:/tmp"

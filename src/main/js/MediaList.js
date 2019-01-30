@@ -6,6 +6,12 @@ const mediaStyle = {
     display: 'inline-block'
 };
 
+const mediaListStyle = {
+    margin: 10,
+    display: 'inline-block',
+    width: '80%'
+};
+
 export class MediaList extends React.Component {
     constructor(props) {
         super(props);
@@ -23,7 +29,7 @@ export class MediaList extends React.Component {
             </div>
         );
         return (
-            <div>
+            <div style={mediaListStyle}>
                 {mediaList}
             </div>
         )
