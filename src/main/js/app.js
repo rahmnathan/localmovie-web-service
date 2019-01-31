@@ -54,7 +54,12 @@ class App extends React.Component {
     }
 
     selectMedia(media) {
-        this.setState({currentMedia: media, currentPath: media.path});
+        let newState = {currentMedia: media, currentPath: media.path};
+        if(viewingVideos(media.path)){
+            newState = {currentMedia: media};
+        }
+
+        this.setState(newState);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -150,7 +155,7 @@ class App extends React.Component {
     }
 
     stopVideo() {
-        this.setState({currentMedia: null})
+        this.setState({currentMedia: null, media: this.state.originalMedia.get(this.state.currentPath)})
     }
 
     loadMedia() {
