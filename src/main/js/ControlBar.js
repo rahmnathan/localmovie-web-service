@@ -14,16 +14,13 @@ const controlBarStyle = {
     marginTop: 0
 };
 
-export class ControlBar extends React.Component {
-
-    render(){
-        return (
-            <div style={controlBarStyle}>
-                <SearchBox filterMedia={this.props.filterMedia}/>
-                <Category selectCategory={this.props.selectCategory}/>
-                <Genre selectGenre={this.props.selectGenre}/>
-                <Sort selectSort={this.props.selectSort}/>
-            </div>
-        );
-    }
-}
+export const ControlBar = () => {
+    return (
+        <div style={controlBarStyle}>
+            <SearchBox filterMedia={this.props.filterMedia}/>
+            <Category selectCategory={this.props.selectCategory}/>
+            <Genre selectGenre={this.props.selectGenre}/>
+            <Sort selectSort={this.props.selectSort}/>
+        </div>
+    );
+};

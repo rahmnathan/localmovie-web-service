@@ -27,22 +27,20 @@ const buttonStyle = {
     borderColor: 'black'
 };
 
-export class VideoPlayer extends React.Component {
-    render() {
-        let component = null;
+export const VideoPlayer = () => {
+    let component = null;
 
-        if (this.props.media !== null) {
-            if (viewingVideos(this.props.media.path)) {
-                component = (
-                    <div style={videoPlayerStyle}>
-                        <Player poster={buildPosterUri(this.props.media)}
-                                src={buildVideoPath(this.props.media)}/>
-                        <button style={buttonStyle} onClick={this.props.stopVideo}>Exit Video</button>
-                    </div>
-                );
-            }
+    if (this.props.media !== null) {
+        if (viewingVideos(this.props.media.path)) {
+            component = (
+                <div style={videoPlayerStyle}>
+                    <Player poster={buildPosterUri(this.props.media)}
+                            src={buildVideoPath(this.props.media)}/>
+                    <button style={buttonStyle} onClick={this.props.stopVideo}>Exit Video</button>
+                </div>
+            );
         }
-
-        return (component);
     }
-}
+
+    return (component);
+};
