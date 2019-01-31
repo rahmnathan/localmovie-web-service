@@ -1,15 +1,12 @@
 import React from 'react';
 import { Media } from './Media';
 
-const mediaStyle = {
-    margin: 10,
-    display: 'inline-block'
-};
-
 const mediaListStyle = {
     margin: 10,
     display: 'inline-block',
-    width: '80%'
+    width: '80%',
+    maxHeight: 1100,
+    overflow: 'auto'
 };
 
 export class MediaList extends React.Component {
@@ -24,9 +21,7 @@ export class MediaList extends React.Component {
 
     render() {
         const mediaList = this.props.media.map(media =>
-            <div style={mediaStyle}>
-                <Media  key={media.path} media={media} selectMedia={this.selectMedia}/>
-            </div>
+            <Media  key={media.path} media={media} selectMedia={this.selectMedia}/>
         );
         return (
             <div style={mediaListStyle}>

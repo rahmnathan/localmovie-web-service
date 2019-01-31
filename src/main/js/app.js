@@ -85,6 +85,10 @@ class App extends React.Component {
                 let currentSearchText = this.state.searchText;
                 if(currentSearchText !== null && currentSearchText !== ''){
                     resultMedia = resultMedia.filter(function (media) {
+                        if(media.movie === null || media.movie.title === null){
+                            return false;
+                        }
+
                         return media.movie.title.toLowerCase().includes(currentSearchText);
                     });
                 }
@@ -92,6 +96,10 @@ class App extends React.Component {
                 let currentSort = this.state.sort;
                 if(currentSort !== null) {
                     resultMedia = resultMedia.sort(function (media1, media2) {
+                        if(media1 === null || media2 === null || media1.movie === null || media2.movie === null){
+                            return true;
+                        }
+
                         switch (currentSort) {
                             case 'title':
                                 return media1.movie.title > media2.movie.title;
