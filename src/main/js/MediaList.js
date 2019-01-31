@@ -5,7 +5,7 @@ const mediaListStyle = {
     margin: 10,
     display: 'inline-block',
     width: '80%',
-    paddingTop: 80
+    paddingTop: 90
 };
 
 export class MediaList extends React.Component {

@@ -9,7 +9,7 @@ const controlBarStyle = {
     position: 'fixed',
     left: '50%',
     marginLeft: '-37.5%',
-    width: '75%',
+    width: '85%',
     background: 'rgb(21, 21, 30)',
     marginTop: 0
 };
