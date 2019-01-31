@@ -4,7 +4,8 @@ const searchBoxStyle = {
     color: 'white',
     fontSize: 14,
     margin: 'auto',
-    textAlign: 'center'
+    textAlign: 'center',
+    paddingTop: 10
 };
 
 export class SearchBox extends React.Component {

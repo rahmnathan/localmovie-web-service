@@ -5,7 +5,13 @@ import { Genre } from "./Genre";
 import { Sort } from './Sort';
 
 const controlBarStyle = {
-    textAlign: 'center'
+    textAlign: 'center',
+    position: 'fixed',
+    left: '50%',
+    marginLeft: '-37.5%',
+    width: '75%',
+    background: 'rgb(21, 21, 30)',
+    marginTop: 0
 };
 
 export class ControlBar extends React.Component {
