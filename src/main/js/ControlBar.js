@@ -8,8 +8,8 @@ const controlBarStyle = {
     textAlign: 'center',
     position: 'fixed',
     left: '50%',
-    marginLeft: '-37.5%',
-    width: '85%',
+    marginLeft: '-50%',
+    width: '100%',
     background: 'rgb(21, 21, 30)',
     marginTop: 0
 };
