@@ -37,7 +37,7 @@ class App extends React.Component {
         super(props);
         this.state = {
             media: [],
-            originalMedia: [],
+            originalMedia: new Map(),
             currentMedia: null,
             genre: 'all',
             searchText: '',
@@ -66,7 +66,10 @@ class App extends React.Component {
                 this.state.searchText !== prevState.searchText ||
                 this.state.sort !== prevState.sort) {
 
-                let resultMedia = this.state.originalMedia;
+                let resultMedia = [];
+                if(this.state.originalMedia.has(this.state.currentPath)){
+                    resultMedia = this.state.originalMedia.get(this.state.currentPath);
+                }
 
                 let currentGenre = this.state.genre;
                 if(currentGenre !== null && currentGenre !== 'all'){
@@ -143,6 +146,10 @@ class App extends React.Component {
     }
 
     loadMedia() {
+        if(this.state.originalMedia.has(this.state.currentPath)){
+             this.setState({ media: this.state.originalMedia.get(this.state.currentPath)});
+        }
+
         fetch('/localmovie/v2/media', {
             method: 'POST',
             headers: {
@@ -152,7 +159,9 @@ class App extends React.Component {
             body: JSON.stringify(buildMovieRequest(this.state.currentPath))
         }).then(response => response.json())
             .then(data => {
-                this.setState({media: data, originalMedia: data})
+                let originalMedia = this.state.originalMedia;
+                originalMedia.set(this.state.currentPath, data);
+                this.setState({media: data, originalMedia: originalMedia})
             });
     }
 
