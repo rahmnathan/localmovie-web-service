@@ -14,8 +14,7 @@ export const viewingVideos = function (path) {
 
 const videoPlayerStyle = {
     position: 'absolute',
-    height: '90%',
-    width: '90%',
+    width: '80%',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)'
@@ -27,7 +26,7 @@ const buttonStyle = {
     borderColor: 'black'
 };
 
-export const VideoPlayer = ({ media, stopVideo}) => {
+export const VideoPlayer = ({ media, stopVideo }) => {
     let component = null;
 
     if (media !== null) {
