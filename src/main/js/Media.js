@@ -50,7 +50,18 @@ const hoveredMovieStyle = {
     zIndex: 5
 };
 
-const hoveredosterStyle = {
+const hoveredTitleStyle = {
+    fontWeight: 'bold',
+    color: 'white',
+    fontSize: 16,
+    wordWrap: 'normal',
+    margin: 2,
+    textAlign: 'center',
+    maxHeight: 60,
+    overflow: 'hidden'
+};
+
+const hoveredPosterStyle = {
     height: 250,
     width: 175
 };
@@ -101,8 +112,8 @@ export class Media extends React.Component {
             return (
                 <div style={hoveredMovieStyle} onClick={this.selectMedia} onMouseEnter={this.handleHover} onMouseLeave={this.removeHover}>
                     <div>
-                        <LazyLoadImage src={buildPosterUri(media)} alt={title} style={hoveredosterStyle} scrollPosition={this.props.scrollPosition}/>
-                        <p style={titleStyle}>{title}</p>
+                        <LazyLoadImage src={buildPosterUri(media)} alt={title} style={hoveredPosterStyle} scrollPosition={this.props.scrollPosition}/>
+                        <p style={hoveredTitleStyle}>{title}</p>
                         <p style={textStyle}>Year: {year}</p>
                         <p style={textStyle}>IMDB: {rating}</p>
                     </div>
