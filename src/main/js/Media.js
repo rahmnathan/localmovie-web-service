@@ -37,7 +37,7 @@ const posterStyle = {
 const posterBasePath = '/localmovie/v2/media/poster?path=';
 
 export const buildPosterUri = function (media) {
-    if(media.movie !== null && media.movie.image === 'noImage'){
+    if(media.movie.image === null || media.movie.image === 'noImage'){
         return 'noPicture.gif';
     } else {
         return posterBasePath + encodeURIComponent(media.path);
@@ -55,19 +55,27 @@ export class Media extends React.Component {
     }
 
     buildMedia(){
-        let title = '';
-        let year = 0;
-        let rating = '';
+        let media = this.props.media;
+        let movie = media.movie;
 
-        if(this.props.media.movie !== null){
-            title = this.props.media.movie.title;
-            year = this.props.media.movie.releaseYear;
-            rating = this.props.media.movie.imdbRating;
+        let title = media.fileName.substr(0, media.fileName.length - 4);
+        if(movie.title !== null){
+            title = movie.title;
+        }
+
+        let year = 0;
+        if(movie.releaseYear !== null){
+            year = movie.releaseYear;
+        }
+
+        let rating = '';
+        if(movie.imdbRating !== null){
+            year = movie.imdbRating;
         }
 
         return (
             <div style={movieStyle} onClick={this.selectMedia}>
-                <LazyLoadImage src={buildPosterUri(this.props.media)} alt='noPicture.gif' style={posterStyle} scrollPosition={this.props.scrollPosition}/>
+                <LazyLoadImage src={buildPosterUri(media)} alt={title} style={posterStyle} scrollPosition={this.props.scrollPosition}/>
                 <p style={titleStyle}>{title}</p>
                 <p style={textStyle}>Year: {year}</p>
                 <p style={textStyle}>IMDB: {rating}</p>
