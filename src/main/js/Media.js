@@ -1,4 +1,5 @@
 import React from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const movieStyle = {
     borderStyle: 'solid',
@@ -66,7 +67,7 @@ export class Media extends React.Component {
 
         return (
             <div style={movieStyle} onClick={this.selectMedia}>
-                <img src={buildPosterUri(this.props.media)} alt='noPicture.gif' style={posterStyle}/>
+                <LazyLoadImage src={buildPosterUri(this.props.media)} alt='noPicture.gif' style={posterStyle} scrollPosition={this.props.scrollPosition}/>
                 <p style={titleStyle}>{title}</p>
                 <p style={textStyle}>Year: {year}</p>
                 <p style={textStyle}>IMDB: {rating}</p>

@@ -27,16 +27,16 @@ const buttonStyle = {
     borderColor: 'black'
 };
 
-export const VideoPlayer = () => {
+export const VideoPlayer = ({ media, stopVideo}) => {
     let component = null;
 
-    if (this.props.media !== null) {
-        if (viewingVideos(this.props.media.path)) {
+    if (media !== null) {
+        if (viewingVideos(media.path)) {
             component = (
                 <div style={videoPlayerStyle}>
-                    <Player poster={buildPosterUri(this.props.media)}
-                            src={buildVideoPath(this.props.media)}/>
-                    <button style={buttonStyle} onClick={this.props.stopVideo}>Exit Video</button>
+                    <Player poster={buildPosterUri(media)}
+                            src={buildVideoPath(media)}/>
+                    <button style={buttonStyle} onClick={stopVideo}>Exit Video</button>
                 </div>
             );
         }

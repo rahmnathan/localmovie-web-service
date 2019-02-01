@@ -1,5 +1,6 @@
 import React from 'react';
 import { Media } from './Media';
+import { LazyLoadImage, trackWindowScroll } from 'react-lazy-load-image-component';
 
 const mediaListStyle = {
     margin: 10,
@@ -29,3 +30,5 @@ export class MediaList extends React.Component {
         )
     }
 }
+
+export default trackWindowScroll(MediaList);
