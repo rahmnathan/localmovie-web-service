@@ -70,7 +70,7 @@ export class Media extends React.Component {
 
         let rating = '';
         if(movie.imdbRating !== null){
-            year = movie.imdbRating;
+            rating = movie.imdbRating;
         }
 
         return (
