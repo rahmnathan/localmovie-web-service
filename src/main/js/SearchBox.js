@@ -8,19 +8,6 @@ const searchBoxStyle = {
     paddingTop: 10
 };
 
-export class SearchBox extends React.Component {
-    constructor(props){
-        super(props);
-        this.filterMedia = this.filterMedia.bind(this);
-    }
-
-    filterMedia(e){
-        this.props.filterMedia(e.target.value);
-    }
-
-    render() {
-        return (
-            <p style={searchBoxStyle}>Search<br/><input onChange={this.filterMedia} type='text' /></p>
-        );
-    }
-}
+export const SearchBox = ({ filterMedia }) => {
+    return (<p style={searchBoxStyle}>Search<br/><input onChange={(e) => filterMedia(e.target.value)} type='text'/></p>);
+};

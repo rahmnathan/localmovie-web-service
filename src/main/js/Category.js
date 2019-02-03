@@ -8,23 +8,12 @@ const categoryStyle = {
     marginRight: 10
 };
 
-export class Category extends React.Component {
-    constructor(props) {
-        super(props);
-        this.setPath = this.setPath.bind(this);
-    }
-
-    setPath(e) {
-        this.props.setPath(e.target.value);
-    }
-
-    render() {
-        return (
-            <div style={categoryStyle}>
-                <p style={categoryStyle}>Category: </p>
-                <button style={{ marginRight: 5}} onClick={this.setPath} value='Movies'>Movies</button>
-                <button onClick={this.setPath} value='Series'>Series</button>
-            </div>
-        );
-    }
+export const Category = ({setPath}) => {
+    return (
+        <div style={categoryStyle}>
+            <p style={categoryStyle}>Category: </p>
+            <button style={{marginRight: 5}} onClick={(e) => setPath(e.target.value)} value='Movies'>Movies</button>
+            <button onClick={(e) => setPath(e.target.value)} value='Series'>Series</button>
+        </div>
+    );
 }
