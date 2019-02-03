@@ -69,25 +69,25 @@ const hoveredPosterStyle = {
 
 const posterBasePath = '/localmovie/v2/media/poster?path=';
 
-export const buildPosterUri = function (media) {
-    if(media === null || media.movie.image === null || media.movie.image === 'noImage'){
+export const buildPosterUri = function (path) {
+    if(path === null){
         return 'noPicture.gif';
     } else {
-        return posterBasePath + encodeURIComponent(media.path);
+        return posterBasePath + encodeURIComponent(path);
     }
 };
 
 export class Media extends React.Component {
     constructor(props) {
         super(props);
-        this.setState({ hovered: false });
+        this.state = ({ hovered: false });
         this.selectMedia = this.selectMedia.bind(this);
         this.handleHover = this.handleHover.bind(this);
         this.removeHover = this.removeHover.bind(this);
     }
 
     selectMedia() {
-        this.props.selectMedia(this.props.media);
+        this.props.setPath(this.props.media.path);
     }
 
     buildMedia() {
@@ -113,7 +113,7 @@ export class Media extends React.Component {
             return (
                 <div style={hoveredMovieStyle} onClick={this.selectMedia} onMouseEnter={this.handleHover} onMouseLeave={this.removeHover}>
                     <div>
-                        <LazyLoadImage src={buildPosterUri(media)} alt={title} style={hoveredPosterStyle} scrollPosition={this.props.scrollPosition}/>
+                        <LazyLoadImage src={buildPosterUri(media.path)} onError={(e)=>{e.target.onerror = null; e.target.src="noPicture.gif"}} alt={title} style={hoveredPosterStyle} scrollPosition={this.props.scrollPosition}/>
                         <p style={hoveredTitleStyle}>{title}</p>
                         <p style={textStyle}>Year: {year}</p>
                         <p style={textStyle}>IMDB: {rating}</p>
@@ -125,7 +125,7 @@ export class Media extends React.Component {
         return (
             <div style={movieStyle} onClick={this.selectMedia} onMouseEnter={this.handleHover} onMouseLeave={this.removeHover}>
                 <div>
-                    <LazyLoadImage src={buildPosterUri(media)} alt={title} style={posterStyle} scrollPosition={this.props.scrollPosition}/>
+                    <LazyLoadImage onError={(e)=>{e.target.onerror = null; e.target.src="noPicture.gif"}} src={buildPosterUri(media.path)} alt={title} style={posterStyle} scrollPosition={this.props.scrollPosition}/>
                     <p style={titleStyle}>{title}</p>
                     <p style={textStyle}>Year: {year}</p>
                     <p style={textStyle}>IMDB: {rating}</p>

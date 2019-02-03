@@ -14,11 +14,11 @@ const controlBarStyle = {
     marginTop: 0
 };
 
-export const ControlBar = ({ filterMedia, selectCategory, selectGenre, selectSort }) => {
+export const ControlBar = ({ filterMedia, setPath, selectGenre, selectSort }) => {
     return (
         <div style={controlBarStyle}>
             <SearchBox filterMedia={filterMedia}/>
-            <Category selectCategory={selectCategory}/>
+            <Category setPath={setPath}/>
             <Genre selectGenre={selectGenre}/>
             <Sort selectSort={selectSort}/>
         </div>

@@ -11,18 +11,18 @@ const categoryStyle = {
 export class Category extends React.Component {
     constructor(props) {
         super(props);
-        this.selectCategory = this.selectCategory.bind(this);
+        this.setPath = this.setPath.bind(this);
     }
 
-    selectCategory(e) {
-        this.props.selectCategory(e.target.value);
+    setPath(e) {
+        this.props.setPath(e.target.value);
     }
 
     render() {
         return (
             <div style={categoryStyle}>
                 <p style={categoryStyle}>Category: </p>
-                <select onChange={this.selectCategory} >
+                <select onChange={this.setPath} >
                     <option value='Movies'>Movies</option>
                     <option value='Series'>Series</option>
                 </select>

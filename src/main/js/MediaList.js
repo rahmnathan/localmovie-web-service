@@ -9,26 +9,16 @@ const mediaListStyle = {
     paddingTop: 150
 };
 
-export class MediaList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.selectMedia = this.selectMedia.bind(this);
-    }
+export const MediaList = ({ media, setPath}) => {
+    const mediaList = media.map(media =>
+        <Media key={media.path} media={media} setPath={setPath}/>
+    );
 
-    selectMedia(media) {
-        this.props.selectMedia(media);
-    }
-
-    render() {
-        const mediaList = this.props.media.map(media =>
-            <Media  key={media.path} media={media} selectMedia={this.selectMedia}/>
-        );
-        return (
-            <div style={mediaListStyle}>
-                {mediaList}
-            </div>
-        )
-    }
-}
+    return (
+        <div style={mediaListStyle}>
+            {mediaList}
+        </div>
+    )
+};
 
 export default trackWindowScroll(MediaList);

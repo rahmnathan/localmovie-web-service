@@ -15,15 +15,19 @@ const backgroundTintStyle = {
     background: 'rgba(0, 0, 0, 0.7)'
 };
 
-const buildVideoPath = function (media) {
-    if(media !== null) {
-        return videoBaseUri + encodeURIComponent(media.path);
+const buildVideoPath = function (path) {
+    if(path !== null) {
+        return videoBaseUri + encodeURIComponent(path);
     } else {
         return videoBaseUri;
     }
 };
 
 export const viewingVideos = function (path) {
+    if(path === null){
+        return false;
+    }
+
     return (path.includes("Movies") && path.split("/").length === 2) || path.split("/").length === 4;
 };
 
@@ -42,12 +46,11 @@ const buttonStyle = {
     borderColor: 'black'
 };
 
-export const VideoPlayer = ({ media, stopVideo }) => {
+export const VideoPlayer = ({ videoPath }) => {
     return (
         <div style={videoPlayerStyle}>
-            <Player poster={buildPosterUri(media)}
-                    src={buildVideoPath(media)}/>
-            <button style={buttonStyle} onClick={stopVideo}>Exit Video</button>
+            <Player poster={buildPosterUri(videoPath)} src={buildVideoPath(videoPath)}/>
+            <button style={buttonStyle} onClick={() => {window.history.back()}}>Exit Video</button>
             <div style={backgroundTintStyle}/>;
         </div>
     );
