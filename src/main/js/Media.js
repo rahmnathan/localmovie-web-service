@@ -70,7 +70,7 @@ const hoveredPosterStyle = {
 const posterBasePath = '/localmovie/v2/media/poster?path=';
 
 export const buildPosterUri = function (media) {
-    if(media.movie.image === null || media.movie.image === 'noImage'){
+    if(media === null || media.movie.image === null || media.movie.image === 'noImage'){
         return 'noPicture.gif';
     } else {
         return posterBasePath + encodeURIComponent(media.path);
@@ -109,7 +109,7 @@ export class Media extends React.Component {
             rating = movie.imdbRating;
         }
 
-        if (this.state !== null &&this.state.hovered) {
+        if (this.state !== null && this.state.hovered) {
             return (
                 <div style={hoveredMovieStyle} onClick={this.selectMedia} onMouseEnter={this.handleHover} onMouseLeave={this.removeHover}>
                     <div>

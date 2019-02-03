@@ -1,11 +1,8 @@
-'use strict';
-
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { MediaList } from './MediaList';
-import { VideoPlayer } from './VideoPlayer';
-import { viewingVideos } from "./VideoPlayer";
-import { ControlBar } from './ControlBar';
+import {VideoPlayer, viewingVideos} from "./VideoPlayer";
+import { Router, navigate } from "@reach/router"
+import {MainPage} from './MainPage';
 
 const buildMovieRequest = function (path) {
     return {
@@ -14,21 +11,6 @@ const buildMovieRequest = function (path) {
         page: 0,
         resultsPerPage: 1000
     }
-};
-
-const backgroundTintStyle = {
-    zIndex: -1,
-    height: '100%',
-    width: '100%',
-    position: 'fixed',
-    overflow: 'auto',
-    top: 0,
-    left: 0,
-    background: 'rgba(0, 0, 0, 0.7)'
-};
-
-const layoutProps = {
-    textAlign: 'center'
 };
 
 class App extends React.Component {
@@ -57,13 +39,14 @@ class App extends React.Component {
         let newState = {currentMedia: media, currentPath: media.path};
         if(viewingVideos(media.path)){
             newState = {currentMedia: media};
+            this.setState(newState);
+            navigate('/video-player');
         }
 
-        this.setState(newState);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if(!viewingVideos(this.state.currentPath)){
+        if(!viewingVideos(this.state.currentPath)) {
             if(this.state.currentPath !== prevState.currentPath){
                 this.loadMedia();
                 this.setState({searchText: '', genre: 'all'})
@@ -125,19 +108,6 @@ class App extends React.Component {
         }
     }
 
-    buildPage(media) {
-        if(media === null || !viewingVideos(media.path)){
-            return (
-                <div>
-                    <ControlBar selectSort={this.selectSort} selectGenre={this.selectGenre} filterMedia={this.filterMedia} selectCategory={this.selectCategory}/>
-                    <MediaList media={this.state.media} selectMedia={this.selectMedia}/>
-                </div>
-            );
-        } else {
-            return <div style={backgroundTintStyle}/>;
-        }
-    };
-
     selectSort(sort){
         if(sort !== null){
             this.setState({sort: sort})
@@ -155,12 +125,13 @@ class App extends React.Component {
     }
 
     stopVideo() {
-        this.setState({currentMedia: null, media: this.state.originalMedia.get(this.state.currentPath)})
+        this.setState({currentMedia: null, media: this.state.originalMedia.get(this.state.currentPath)});
+        navigate('/');
     }
 
     loadMedia() {
         if(this.state.originalMedia.has(this.state.currentPath)){
-             this.setState({ media: this.state.originalMedia.get(this.state.currentPath)});
+            this.setState({ media: this.state.originalMedia.get(this.state.currentPath)});
         }
 
         fetch('/localmovie/v2/media', {
@@ -186,14 +157,13 @@ class App extends React.Component {
         this.setState({searchText: searchText})
     }
 
-    render() {
-        let page = this.buildPage(this.state.currentMedia);
-        return (
-            <div style={layoutProps}>
-                <VideoPlayer stopVideo={this.stopVideo} media={this.state.currentMedia}/>
-                {page}
-            </div>
-        )
+    render(){
+        return(
+            <Router>
+                <MainPage path='/' selectSort={this.selectSort} selectGenre={this.selectGenre} filterMedia={this.filterMedia} selectCategory={this.selectCategory} media={this.state.media} selectMedia={this.selectMedia} />
+                <VideoPlayer path='/video-player' stopVideo={this.stopVideo} media={this.state.currentMedia}/>
+            </Router>
+        );
     }
 }
 
