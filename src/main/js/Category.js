@@ -16,4 +16,4 @@ export const Category = ({setPath}) => {
             <button onClick={(e) => setPath(e.target.value)} value='Series'>Series</button>
         </div>
     );
-}
+};

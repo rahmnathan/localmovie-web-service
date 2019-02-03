@@ -23,4 +23,4 @@ export const Genre = ({ selectGenre }) => {
             </select>
         </div>
     );
-}
+};
