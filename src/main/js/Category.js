@@ -22,10 +22,8 @@ export class Category extends React.Component {
         return (
             <div style={categoryStyle}>
                 <p style={categoryStyle}>Category: </p>
-                <select onChange={this.setPath} >
-                    <option value='Movies'>Movies</option>
-                    <option value='Series'>Series</option>
-                </select>
+                <button style={{ marginRight: 5}} onClick={this.setPath} value='Movies'>Movies</button>
+                <button onClick={this.setPath} value='Series'>Series</button>
             </div>
         );
     }
