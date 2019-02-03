@@ -43,6 +43,7 @@ class App extends React.Component {
             navigate('/video-player');
         }
 
+        this.setState(newState);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
