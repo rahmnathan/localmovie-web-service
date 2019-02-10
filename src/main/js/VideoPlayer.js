@@ -1,5 +1,4 @@
 import React from 'react';
-import { Player } from 'video-react';
 import { buildPosterUri } from "./Media";
 
 const videoBaseUri = 'localmovie/v2/media/stream.mp4?path=';
@@ -49,7 +48,9 @@ const buttonStyle = {
 export const VideoPlayer = ({ videoPath }) => {
     return (
         <div style={videoPlayerStyle}>
-            <Player poster={buildPosterUri(videoPath)} src={buildVideoPath(videoPath)}/>
+            <video width="100%" controls poster={buildPosterUri(videoPath)}>
+                <source src={buildVideoPath(videoPath)} type="video/mp4"/>
+            </video>
             <button style={buttonStyle} onClick={() => {window.history.back()}}>Exit Video</button>
             <div style={backgroundTintStyle}/>;
         </div>
