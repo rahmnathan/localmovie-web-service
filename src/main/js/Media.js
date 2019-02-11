@@ -49,7 +49,8 @@ const hoveredMovieStyle = {
     margin: -20,
     marginBottom: -25,
     verticalAlign: 'top',
-    zIndex: 5
+    zIndex: 5,
+    position: 'relative'
 };
 
 const hoveredTitleStyle = {
@@ -120,8 +121,7 @@ export class Media extends React.Component {
                     transitionLeave={true}>
                     <div style={hoveredMovieStyle} onClick={this.selectMedia} onMouseEnter={this.handleHover} onMouseLeave={this.removeHover}>
                         <div>
-                            <LazyLoadImage src={buildPosterUri(media.path)} onError={(e) => {e.target.onerror = null;
-                                e.target.src = "noPicture.gif"}} alt={title} style={hoveredPosterStyle} scrollPosition={this.props.scrollPosition}/>
+                            <LazyLoadImage src={buildPosterUri(media.path)} onError={(e) => {e.target.onerror = null; e.target.src = "noPicture.gif"}} alt={title} style={hoveredPosterStyle} scrollPosition={this.props.scrollPosition}/>
                             <p style={hoveredTitleStyle}>{title}</p>
                             <p style={textStyle}>Year: {year}</p>
                             <p style={textStyle}>IMDB: {rating}</p>
