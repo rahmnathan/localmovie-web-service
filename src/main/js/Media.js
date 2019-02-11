@@ -1,5 +1,6 @@
 import React from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const movieStyle = {
     borderStyle: 'solid',
@@ -111,26 +112,41 @@ export class Media extends React.Component {
 
         if (this.state !== null && this.state.hovered) {
             return (
-                <div style={hoveredMovieStyle} onClick={this.selectMedia} onMouseEnter={this.handleHover} onMouseLeave={this.removeHover}>
-                    <div>
-                        <LazyLoadImage src={buildPosterUri(media.path)} onError={(e)=>{e.target.onerror = null; e.target.src="noPicture.gif"}} alt={title} style={hoveredPosterStyle} scrollPosition={this.props.scrollPosition}/>
-                        <p style={hoveredTitleStyle}>{title}</p>
-                        <p style={textStyle}>Year: {year}</p>
-                        <p style={textStyle}>IMDB: {rating}</p>
+                <ReactCSSTransitionGroup
+                    transitionName="fadein"
+                    transitionAppear={true}
+                    transitionAppearTimeout={500}
+                    transitionEnter={true}
+                    transitionLeave={true}>
+                    <div style={hoveredMovieStyle} onClick={this.selectMedia} onMouseEnter={this.handleHover} onMouseLeave={this.removeHover}>
+                        <div>
+                            <LazyLoadImage src={buildPosterUri(media.path)} onError={(e) => {e.target.onerror = null;
+                                e.target.src = "noPicture.gif"}} alt={title} style={hoveredPosterStyle} scrollPosition={this.props.scrollPosition}/>
+                            <p style={hoveredTitleStyle}>{title}</p>
+                            <p style={textStyle}>Year: {year}</p>
+                            <p style={textStyle}>IMDB: {rating}</p>
+                        </div>
                     </div>
-                </div>
+                </ReactCSSTransitionGroup>
             )
         }
 
         return (
-            <div style={movieStyle} onClick={this.selectMedia} onMouseEnter={this.handleHover} onMouseLeave={this.removeHover}>
-                <div>
-                    <LazyLoadImage onError={(e)=>{e.target.onerror = null; e.target.src="noPicture.gif"}} src={buildPosterUri(media.path)} alt={title} style={posterStyle} scrollPosition={this.props.scrollPosition}/>
-                    <p style={titleStyle}>{title}</p>
-                    <p style={textStyle}>Year: {year}</p>
-                    <p style={textStyle}>IMDB: {rating}</p>
+            <ReactCSSTransitionGroup
+                transitionName="fadein"
+                transitionAppear={true}
+                transitionAppearTimeout={500}
+                transitionEnter={true}
+                transitionLeave={true}>
+                <div style={movieStyle} onClick={this.selectMedia} onMouseEnter={this.handleHover} onMouseLeave={this.removeHover}>
+                    <div>
+                        <LazyLoadImage onError={(e)=>{e.target.onerror = null; e.target.src="noPicture.gif"}} src={buildPosterUri(media.path)} alt={title} style={posterStyle} scrollPosition={this.props.scrollPosition}/>
+                        <p style={titleStyle}>{title}</p>
+                        <p style={textStyle}>Year: {year}</p>
+                        <p style={textStyle}>IMDB: {rating}</p>
+                    </div>
                 </div>
-            </div>
+            </ReactCSSTransitionGroup>
         )
     }
 
