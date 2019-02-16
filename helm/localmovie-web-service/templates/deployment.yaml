@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
@@ -35,9 +35,6 @@ spec:
         - name: videos
           mountPath: /opt/localmovie-web/data
           readOnly: false
-      dnsConfig:
-        nameservers:
-         - 8.8.8.8
       volumes:
       - name: application-config
         configMap:

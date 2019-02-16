@@ -4,6 +4,7 @@ import com.github.rahmnathan.localmovie.domain.MediaFile;
 import com.github.rahmnathan.localmovie.domain.MediaFileEvent;
 import com.github.rahmnathan.localmovie.domain.MovieClient;
 import com.github.rahmnathan.localmovie.domain.MovieSearchCriteria;
+import com.github.rahmnathan.localmovie.web.control.cache.CacheService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,9 +19,9 @@ import static com.github.rahmnathan.localmovie.web.control.MediaFileUtils.sortMe
 
 @Service
 public class MediaMetadataService {
-    private final MediaCacheService cacheService;
+    private final CacheService cacheService;
 
-    public MediaMetadataService(MediaCacheService cacheService) {
+    public MediaMetadataService(CacheService cacheService) {
         this.cacheService = cacheService;
     }
 

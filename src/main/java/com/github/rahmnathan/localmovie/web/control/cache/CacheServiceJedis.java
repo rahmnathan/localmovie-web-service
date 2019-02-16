@@ -1,4 +1,4 @@
-package com.github.rahmnathan.localmovie.web.control;
+package com.github.rahmnathan.localmovie.web.control.cache;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
@@ -7,26 +7,30 @@ import com.github.rahmnathan.localmovie.domain.MediaFile;
 import com.github.rahmnathan.localmovie.domain.MediaFileEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import static com.github.rahmnathan.localmovie.domain.CachePrefix.FILE_LIST;
+import static com.github.rahmnathan.localmovie.domain.CachePrefix.*;
 import static com.github.rahmnathan.localmovie.domain.CachePrefix.MEDIA_EVENTS;
-import static com.github.rahmnathan.localmovie.domain.CachePrefix.MEDIA_FILE;
 
 @Service
-public class MediaCacheService {
-    private final Logger logger = LoggerFactory.getLogger(MediaCacheService.class);
+@Profile("jedis")
+public class CacheServiceJedis implements CacheService {
+    private final Logger logger = LoggerFactory.getLogger(CacheServiceStub.class);
     private static final ObjectMapper MAPPER = new ObjectMapper().registerModule(new JavaTimeModule());
     private static final CollectionType EVENT_LIST_TYPE = MAPPER.getTypeFactory().constructCollectionType(List.class, MediaFileEvent.class);
     private static final CollectionType FILE_SET_TYPE = MAPPER.getTypeFactory().constructCollectionType(Set.class, String.class);
     private final JedisPool jedisPool;
 
-    public MediaCacheService(JedisPool jedisPool) {
+    public CacheServiceJedis(JedisPool jedisPool) {
         this.jedisPool = jedisPool;
     }
 
