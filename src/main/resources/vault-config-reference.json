@@ -2,19 +2,19 @@
   "endpoints.health.enabled": true,
   "jedis.host": "redis-master",
   "keycloak.auth-server-url": "https://localmovies.hopto.org/auth",
-  "keycloak.bearer-only": "true",
+  "keycloak.public-client": "true",
   "keycloak.realm": "LocalMovies",
-  "keycloak.resource": "local-movie-endpoints",
+  "keycloak.resource": "localmovie-login",
   "keycloak.securityConstraints": [
     {
       "authRoles": [
-        "user"
+        "movieuser"
       ],
       "securityCollections": [
         {
           "name": "secure stuff",
           "patterns": [
-            "/localmovies/*"
+            "/*"
           ]
         }
       ]
@@ -22,8 +22,8 @@
   ],
   "keycloak.ssl-required": "external",
   "logging.pattern.level": "%5p %mdc",
-  "media.path": "/opt/localmovie-web/data/internal/LocalMedia/,/opt/localmovie-web/data/external1/LocalMedia/",
-  "server.port": "8450",
+  "media.path": "/opt/localmovie-web/data/internal/LocalMedia/,/opt/localmovie-web/data/external1/LocalMedia/,/opt/localmovie-web/data/external2/LocalMedia/",
+  "server.port": "8080",
   "server.servlet-path": "/",
-  "server.ssl.enabled": true
+  "server.ssl.enabled": false
 }
