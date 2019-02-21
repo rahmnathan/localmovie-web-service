@@ -1,5 +1,6 @@
 {
   "endpoints.health.enabled": true,
+  "spring.profiles.active": "jedis",
   "jedis.host": "redis-master",
   "keycloak.auth-server-url": "https://localmovies.hopto.org/auth",
   "keycloak.public-client": true,
