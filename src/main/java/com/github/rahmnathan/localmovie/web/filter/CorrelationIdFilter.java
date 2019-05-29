@@ -3,7 +3,6 @@ package com.github.rahmnathan.localmovie.web.filter;
 import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
