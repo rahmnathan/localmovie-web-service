@@ -14,16 +14,18 @@ public class CorrelationIdFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        try {
+            final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
 
-        Optional<String> correlationId = Optional.ofNullable(httpServletRequest.getHeader(X_CORRELATION_ID));
-        MDC.put(X_CORRELATION_ID, correlationId.orElse(UUID.randomUUID().toString()));
+            Optional<String> correlationId = Optional.ofNullable(httpServletRequest.getHeader(X_CORRELATION_ID));
+            MDC.put(X_CORRELATION_ID, correlationId.orElse(UUID.randomUUID().toString()));
 
-        String clientAddress = ((HttpServletRequest) servletRequest).getHeader("X-FORWARDED-FOR");
-        MDC.put(CLIENT_ADDRESS, clientAddress);
+            String clientAddress = ((HttpServletRequest) servletRequest).getHeader("X-FORWARDED-FOR");
+            MDC.put(CLIENT_ADDRESS, clientAddress);
 
-        filterChain.doFilter(httpServletRequest, servletResponse);
-
-        MDC.clear();
+            filterChain.doFilter(httpServletRequest, servletResponse);
+        } finally {
+            MDC.clear();
+        }
     }
 }

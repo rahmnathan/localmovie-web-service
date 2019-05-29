@@ -1,6 +1,7 @@
 package com.github.rahmnathan.localmovie.web.control;
 
 import io.micrometer.core.instrument.Metrics;
+import org.apache.catalina.connector.ClientAbortException;
 import org.apache.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +59,8 @@ public class FileSender {
                 output.flush();
             }
 
+        } catch (ClientAbortException e){
+            logger.info("Client stopped stream.");
         } catch (IOException e) {
             logger.error("Failure streaming video", e);
         } finally {
