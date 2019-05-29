@@ -1,6 +1,9 @@
 package com.github.rahmnathan.localmovie.web.filter;
 
 import org.slf4j.MDC;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +11,8 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
+@Component
+@Order(1)
 public class CorrelationIdFilter implements Filter {
     private static final String X_CORRELATION_ID = "x-correlation-id";
     private static final String CLIENT_ADDRESS = "client-address";
