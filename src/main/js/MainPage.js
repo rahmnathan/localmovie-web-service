@@ -48,41 +48,41 @@ export class MainPage extends React.Component {
             let currentGenre = this.state.genre;
             if (currentGenre !== null && currentGenre !== 'all') {
                 resultMedia = resultMedia.filter(function (media) {
-                    if (media.movie === null || media.movie.genre === null) {
+                    if (media.media === null || media.media.genre === null) {
                         return false;
                     }
 
-                    return media.movie.genre.toLowerCase().includes(currentGenre);
+                    return media.media.genre.toLowerCase().includes(currentGenre);
                 });
             }
 
             let currentSearchText = this.state.searchText;
             if (currentSearchText !== null && currentSearchText !== '') {
                 resultMedia = resultMedia.filter(function (media) {
-                    if (media.movie === null || media.movie.title === null) {
+                    if (media.media === null || media.media.title === null) {
                         return false;
                     }
 
-                    return media.movie.title.toLowerCase().includes(currentSearchText);
+                    return media.media.title.toLowerCase().includes(currentSearchText);
                 });
             }
 
             let currentSort = this.state.sort;
             if (currentSort !== null) {
                 resultMedia = resultMedia.sort(function (media1, media2) {
-                    if (media1 === null || media2 === null || media1.movie === null || media2.movie === null) {
+                    if (media1 === null || media2 === null || media1.media === null || media2.media === null) {
                         return true;
                     }
 
                     switch (currentSort) {
                         case 'title':
-                            return media1.movie.title > media2.movie.title;
+                            return media1.media.title > media2.media.title;
                         case 'year':
-                            return media1.movie.releaseYear < media2.movie.releaseYear;
+                            return media1.media.releaseYear < media2.media.releaseYear;
                         case 'added':
                             return media1.created < media2.created;
                         case 'rating':
-                            return media1.movie.imdbRating < media2.movie.imdbRating;
+                            return media1.media.imdbRating < media2.media.imdbRating;
                         default:
                             return true;
                     }
