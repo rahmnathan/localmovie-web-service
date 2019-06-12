@@ -42,7 +42,7 @@ public class CacheServiceJedis implements CacheService {
                 return MAPPER.readValue(cacheValue, MediaFile.class);
             }
         } catch (IOException e){
-            logger.error("Failure getting media fron cache.", e);
+            logger.error("Failure getting media from cache.", e);
         }
 
         return MediaFile.Builder.newInstance()

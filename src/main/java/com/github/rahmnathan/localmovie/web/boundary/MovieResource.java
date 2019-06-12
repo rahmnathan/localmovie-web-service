@@ -89,7 +89,7 @@ public class MovieResource {
     public byte[] getPoster(@RequestParam("path") String path) {
         logger.info("Streaming poster - {}", path);
 
-        String image = metadataService.loadSingleMediaFile(path).getMovie().getImage();
+        String image = metadataService.loadSingleMediaFile(path).getMedia().getImage();
 
         return image == null ? new byte[0] : Base64.getDecoder().decode(image);
     }

@@ -37,7 +37,7 @@ public class MediaMetadataServiceTest {
         MediaFile mediaFile = mediaMetadataService.loadSingleMediaFile(CacheServiceStub.FILE_PATH);
 
         assertEquals(CacheServiceStub.FILE_PATH, mediaFile.getPath());
-        assertEquals(CacheServiceStub.MOVIE.getTitle(), mediaFile.getMovie().getTitle());
+        assertEquals(CacheServiceStub.MOVIE.getTitle(), mediaFile.getMedia().getTitle());
     }
 
     @Test

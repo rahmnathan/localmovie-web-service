@@ -40,7 +40,7 @@ public class CacheServiceJedisTest {
         MediaFile media = cacheServiceJedis.getMedia(PATH);
 
         assertNotNull(media);
-        assertNotNull(media.getMovie());
+        assertNotNull(media.getMedia());
         assertEquals(PATH, media.getPath());
     }
 
@@ -50,7 +50,7 @@ public class CacheServiceJedisTest {
         MediaFile media = cacheServiceJedis.getMedia(path);
 
         assertNotNull(media);
-        assertNull(media.getMovie());
+        assertNull(media.getMedia());
         assertEquals(path, media.getPath());
     }
 

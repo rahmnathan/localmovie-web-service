@@ -2,7 +2,7 @@ package com.github.rahmnathan.localmovie.web.control.cache;
 
 import com.github.rahmnathan.localmovie.domain.MediaFile;
 import com.github.rahmnathan.localmovie.domain.MediaFileEvent;
-import com.github.rahmnathan.omdb.data.Movie;
+import com.github.rahmnathan.omdb.data.Media;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +17,10 @@ public class CacheServiceStub implements CacheService {
     public static final Set<String> FILE_LIST = Set.of(FILE_PATH);
     public static final MediaFileEvent MEDIA_FILE_EVENT;
     public static final MediaFile MEDIA_FILE;
-    public static final Movie MOVIE;
+    public static final Media MOVIE;
 
     static {
-        MOVIE = Movie.Builder.newInstance()
+        MOVIE = Media.Builder.newInstance()
                 .setTitle("Title")
                 .setReleaseYear("1234")
                 .build();
@@ -29,7 +29,7 @@ public class CacheServiceStub implements CacheService {
                 .setFileName(new File(FILE_PATH).getName())
                 .setPath(FILE_PATH)
                 .setViews(0)
-                .setMovie(MOVIE)
+                .setMedia(MOVIE)
                 .build();
 
         MEDIA_FILE_EVENT = new MediaFileEvent("CREATE", MEDIA_FILE, FILE_PATH);

@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,7 +15,6 @@ class MediaFileUtils {
     private static final Logger logger = LoggerFactory.getLogger(MediaFileUtils.class.getName());
 
     static List<MediaFile> sortMediaFiles(MovieSearchCriteria searchCriteria, List<MediaFile> mediaFiles){
-        logger.info("Sorting movie list - order: {}", searchCriteria.getOrder());
         if (searchCriteria.getPath().split(File.separator).length > 1) {
             return sortMovieInfoList(mediaFiles, MovieOrder.SEASONS_EPISODES);
         } else if (searchCriteria.getOrder() != null) {
@@ -41,7 +41,7 @@ class MediaFileUtils {
 
     private static List<MediaFile> sortMovieInfoList(List<MediaFile> movieInfoList, MovieOrder order){
         logger.info("Sorting movie list: {}", order.name());
-        switch (order){
+        switch (order) {
             case DATE_ADDED:
                 return movieInfoList.stream()
                         .sorted((movie1, movie2) -> Long.compare(movie2.getCreated(), movie1.getCreated()))
@@ -52,23 +52,20 @@ class MediaFileUtils {
                         .collect(Collectors.toList());
             case RELEASE_YEAR:
                 return movieInfoList.stream()
-                        .sorted((movie1, movie2) -> Long.valueOf(movie2.getMovie().getReleaseYear())
-                                .compareTo(Long.valueOf(movie1.getMovie().getReleaseYear())))
+                        .sorted((movie1, movie2) -> Long.valueOf(movie2.getMedia().getReleaseYear())
+                                .compareTo(Long.valueOf(movie1.getMedia().getReleaseYear())))
                         .collect(Collectors.toList());
             case RATING:
                 return movieInfoList.stream()
-                        .sorted((movie1, movie2) -> Double.valueOf(movie2.getMovie().getImdbRating())
-                                .compareTo(Double.valueOf(movie1.getMovie().getImdbRating())))
+                        .sorted((movie1, movie2) -> Double.valueOf(movie2.getMedia().getImdbRating())
+                                .compareTo(Double.valueOf(movie1.getMedia().getImdbRating())))
                         .collect(Collectors.toList());
             case SEASONS_EPISODES:
                 return movieInfoList.stream()
-                        .sorted((movie1, movie2) -> {
-                            Integer current = Integer.parseInt(movie1.getMovie().getTitle().split(" ")[1]);
-                            Integer next = Integer.parseInt(movie2.getMovie().getTitle().split(" ")[1]);
-                            return current.compareTo(next);
-                        })
+                        .sorted(Comparator.comparing(movie -> movie.getMedia().getNumber()))
                         .collect(Collectors.toList());
+            default:
+                return movieInfoList;
         }
-        return movieInfoList;
     }
 }

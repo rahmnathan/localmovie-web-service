@@ -4,7 +4,7 @@ import com.github.rahmnathan.localmovie.domain.MediaFile;
 import com.github.rahmnathan.localmovie.domain.MovieClient;
 import com.github.rahmnathan.localmovie.domain.MovieOrder;
 import com.github.rahmnathan.localmovie.domain.MovieSearchCriteria;
-import com.github.rahmnathan.omdb.data.Movie;
+import com.github.rahmnathan.omdb.data.Media;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class MediaFileUtilsTest {
     public void removePosterImagesTest(){
         List<MediaFile> mediaFilesNoPosterImages = MediaFileUtils.removePosterImages(buildMediaFileList());
 
-        mediaFilesNoPosterImages.forEach(mediaFile -> assertEquals("", mediaFile.getMovie().getImage()));
+        mediaFilesNoPosterImages.forEach(mediaFile -> assertEquals("", mediaFile.getMedia().getImage()));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class MediaFileUtilsTest {
         MediaFile previous = sortedMedia.get(0);
         for(int i = 1; i < sortedMedia.size(); i++){
             MediaFile current = sortedMedia.get(i);
-            assertTrue(Double.valueOf(previous.getMovie().getImdbRating()) >= Double.valueOf(current.getMovie().getImdbRating()));
+            assertTrue(Double.valueOf(previous.getMedia().getImdbRating()) >= Double.valueOf(current.getMedia().getImdbRating()));
             previous = current;
         }
     }
@@ -82,7 +82,7 @@ public class MediaFileUtilsTest {
         MediaFile previous = sortedMedia.get(0);
         for(int i = 1; i < sortedMedia.size(); i++){
             MediaFile current = sortedMedia.get(i);
-            assertTrue(Integer.valueOf(previous.getMovie().getReleaseYear()) >= Integer.valueOf(current.getMovie().getReleaseYear()));
+            assertTrue(Integer.valueOf(previous.getMedia().getReleaseYear()) >= Integer.valueOf(current.getMedia().getReleaseYear()));
             previous = current;
         }
     }
@@ -101,7 +101,7 @@ public class MediaFileUtilsTest {
                 .setFileName("test")
                 .setPath(path)
                 .setViews(RANDOM.nextInt())
-                .setMovie(buildMovie())
+                .setMedia(buildMovie())
                 .build();
 
         mediaFile.setTimeStamp();
@@ -109,8 +109,8 @@ public class MediaFileUtilsTest {
         return mediaFile;
     }
 
-    private static Movie buildMovie(){
-        return Movie.Builder.newInstance()
+    private static Media buildMovie(){
+        return Media.Builder.newInstance()
                 .setReleaseYear(String.valueOf(RANDOM.nextInt()))
                 .setTitle("title")
                 .setIMDBRating(String.valueOf(RANDOM.nextDouble()))
