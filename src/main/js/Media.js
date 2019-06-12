@@ -1,6 +1,7 @@
 import React from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import {viewingVideos} from "./VideoPlayer";
 
 const movieStyle = {
     borderStyle: 'solid',
@@ -97,7 +98,13 @@ export class Media extends React.Component {
         let media = mediaFile.media;
 
         let title = mediaFile.fileName.substr(0, mediaFile.fileName.length - 4);
-        if (media.title !== null) {
+        if(viewingVideos(mediaFile.path) && media.number != null) {
+            if(media.title !== null && media.mediaType === "EPISODE"){
+                title = "#" + media.number + " - " + media.title;
+            } else {
+                title = "#" + media.number;
+            }
+        } else if(media.title != null){
             title = media.title;
         }
 
