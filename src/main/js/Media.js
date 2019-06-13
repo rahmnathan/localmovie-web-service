@@ -8,10 +8,10 @@ const movieStyle = {
     borderColor: '#2b2b2b',
     backgroundColor: 'rgb(21, 21, 30)',
     width: 150,
-    padding: 5,
+    padding: 3,
     height: 295,
     display: 'inline-block',
-    margin: 10,
+    margin: 8,
     verticalAlign: 'top'
 };
 
@@ -36,7 +36,7 @@ const titleStyle = {
 
 const posterStyle = {
     height: 200,
-    width: 125
+    width: 140
 };
 
 const hoveredMovieStyle = {
@@ -44,7 +44,7 @@ const hoveredMovieStyle = {
     borderColor: '#2b2b2b',
     backgroundColor: 'rgb(21, 21, 30)',
     width: 210,
-    padding: 5,
+    padding: 3,
     height: 360,
     display: 'inline-block',
     margin: -20,
@@ -67,7 +67,7 @@ const hoveredTitleStyle = {
 
 const hoveredPosterStyle = {
     height: 250,
-    width: 175
+    width: 190
 };
 
 const posterBasePath = '/localmovie/v2/media/poster?path=';
