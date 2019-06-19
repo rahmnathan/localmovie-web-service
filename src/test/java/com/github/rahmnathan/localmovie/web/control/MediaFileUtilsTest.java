@@ -104,7 +104,8 @@ public class MediaFileUtilsTest {
                 .setMedia(buildMovie())
                 .build();
 
-        mediaFile.setTimeStamp();
+        mediaFile.setUpdated();
+        mediaFile.setCreated();
 
         return mediaFile;
     }

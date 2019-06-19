@@ -1,6 +1,7 @@
 package com.github.rahmnathan.localmovie.web.control.cache;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.rahmnathan.localmovie.domain.MediaFile;
 import com.github.rahmnathan.localmovie.domain.MediaFileEvent;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class CacheServiceJedisTest {
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper().registerModule(new JavaTimeModule());
     private static final String PATH = "/my/test/path";
     private CacheServiceJedis cacheServiceJedis;
 
