@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:alpine-slim
+FROM adoptopenjdk/openjdk11:alpine-jre
 
 RUN mkdir /opt/localmovie-web && mkdir /opt/localmovie-web/config
 
