@@ -1,14 +1,11 @@
 package com.github.rahmnathan.localmovie.web.control;
 
-import com.github.rahmnathan.localmovie.domain.MediaFile;
-import com.github.rahmnathan.localmovie.domain.MediaFileEvent;
-import com.github.rahmnathan.localmovie.domain.MovieClient;
-import com.github.rahmnathan.localmovie.domain.MovieSearchCriteria;
-import com.github.rahmnathan.localmovie.web.control.cache.CacheService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.github.rahmnathan.localmovie.web.data.MediaClient;
+import com.github.rahmnathan.localmovie.web.data.MovieSearchCriteria;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,33 +26,40 @@ public class MediaMetadataService {
         return cacheService.listFiles(directoryPath).size();
     }
 
-    public MediaFile loadSingleMediaFile(String filePath) {
+    public JsonNode loadSingleMediaFile(String filePath) {
         return cacheService.getMedia(filePath);
     }
 
-    public List<MediaFile> loadMediaFileList(MovieSearchCriteria searchCriteria) {
+    public List<JsonNode> loadMediaFileList(MovieSearchCriteria searchCriteria) {
         Set<String> files = cacheService.listFiles(searchCriteria.getPath());
-        List<MediaFile> movies = loadMedia(files);
+        List<JsonNode> movies = loadMedia(files);
 
-        if (searchCriteria.getClient() == MovieClient.WEBAPP) {
-            movies = removePosterImages(movies);
+        if (searchCriteria.getClient() == MediaClient.WEBAPP) {
+            removePosterImages(movies);
         }
 
         movies = sortMediaFiles(searchCriteria, movies);
         return paginateMediaFiles(movies, searchCriteria);
     }
 
-    private List<MediaFile> loadMedia(Set<String> relativePaths){
+    private List<JsonNode> loadMedia(Set<String> relativePaths){
         return relativePaths.stream()
                 .sorted()
                 .map(cacheService::getMedia)
                 .collect(Collectors.toList());
     }
 
-    public List<MediaFileEvent> getMediaFileEvents(LocalDateTime dateTime){
+    public List<JsonNode> getMediaFileEvents(LocalDateTime dateTime){
         return cacheService.getMediaEvents().stream()
-                .filter(mediaFileEvent -> mediaFileEvent.getTimestamp().isAfter(dateTime))
-                .sorted(Comparator.comparing(MediaFileEvent::getTimestamp))
+                .filter(jsonNode -> {
+                    LocalDateTime timestamp = LocalDateTime.parse(jsonNode.get("timestamp").textValue());
+                    return timestamp.isAfter(dateTime);
+                })
+                .sorted((node1, node2) -> {
+                    LocalDateTime node1Time = LocalDateTime.parse(node1.get("timestamp").textValue());
+                    LocalDateTime node2Time = LocalDateTime.parse(node2.get("timestamp").textValue());
+                    return node1Time.compareTo(node2Time);
+                })
                 .collect(Collectors.toList());
     }
 }

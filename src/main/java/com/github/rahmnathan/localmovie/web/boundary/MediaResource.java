@@ -1,14 +1,18 @@
 package com.github.rahmnathan.localmovie.web.boundary;
 
-import com.github.rahmnathan.localmovie.domain.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.rahmnathan.localmovie.web.control.FileSender;
 import com.github.rahmnathan.localmovie.web.control.MediaMetadataService;
+import com.github.rahmnathan.localmovie.web.data.MovieInfoRequest;
+import com.github.rahmnathan.localmovie.web.data.MovieSearchCriteria;
 import org.apache.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,19 +25,21 @@ import java.util.Base64;
 import java.util.List;
 
 @RestController
-public class MovieResource {
-    private final Logger logger = LoggerFactory.getLogger(MovieResource.class.getName());
+public class MediaResource {
+    private final Logger logger = LoggerFactory.getLogger(MediaResource.class.getName());
     private final FileSender fileSender = new FileSender();
+    private static final String MEDIA_PROPERTY = "media";
+    private static final String IMAGE_PROPERTY = "image";
     private final MediaMetadataService metadataService;
     private final String[] mediaPaths;
 
-    public MovieResource(MediaMetadataService metadataService, @Value("${media.path}") String[] mediaPaths){
+    public MediaResource(MediaMetadataService metadataService, @Value("${media.path}") String[] mediaPaths){
         this.metadataService = metadataService;
         this.mediaPaths = mediaPaths;
     }
 
     @PostMapping(value = "/localmovie/v2/media", produces=MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<MediaFile> getMovies(@RequestBody MovieInfoRequest movieInfoRequest, HttpServletResponse response) {
+    public List<JsonNode> getMovies(@RequestBody MovieInfoRequest movieInfoRequest, HttpServletResponse response) {
         logger.info("Received request: {}", movieInfoRequest.toString());
 
         MovieSearchCriteria searchCriteria = new MovieSearchCriteria(movieInfoRequest.getPath(), movieInfoRequest.getPage(),
@@ -43,7 +49,7 @@ public class MovieResource {
         if(page != null && page == 0)
             getMovieCount(movieInfoRequest.getPath(), response);
 
-        List<MediaFile> movieInfoList = metadataService.loadMediaFileList(searchCriteria);
+        List<JsonNode> movieInfoList = metadataService.loadMediaFileList(searchCriteria);
 
         logger.info("Returning {} movies", movieInfoList.size());
         return movieInfoList;
@@ -66,8 +72,6 @@ public class MovieResource {
     public void streamVideo(@RequestParam("path") String path, HttpServletResponse response, HttpServletRequest request) {
         response.setHeader("Access-Control-Allow-Origin", "*");
 
-        MediaFile movie = metadataService.loadSingleMediaFile(path);
-        movie.addView();
         logger.info("Received streaming request - {}", path);
         for(String mediaPath : mediaPaths) {
             logger.info("Checking if mediaPath {} contains requested path {}", mediaPath, path);
@@ -89,9 +93,8 @@ public class MovieResource {
     public byte[] getPoster(@RequestParam("path") String path) {
         logger.info("Streaming poster - {}", path);
 
-        String image = metadataService.loadSingleMediaFile(path).getMedia().getImage();
-
-        return image == null ? new byte[0] : Base64.getDecoder().decode(image);
+        JsonNode mediaFile = metadataService.loadSingleMediaFile(path);
+        return extractMediaPoster(mediaFile);
     }
 
     /**
@@ -100,13 +103,27 @@ public class MovieResource {
      * @return - List of MediaFileEvents
      */
     @GetMapping(path = "/localmovie/v2/media/events")
-    public List<MediaFileEvent> getEvents(@RequestParam("timestamp") Long epoch) {
+    public List<JsonNode> getEvents(@RequestParam("timestamp") Long epoch) {
         LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(epoch), ZoneId.systemDefault());
         logger.info("Request for events since: {}", localDateTime);
 
-        List<MediaFileEvent> events = metadataService.getMediaFileEvents(localDateTime);
+        List<JsonNode> events = metadataService.getMediaFileEvents(localDateTime);
 
         logger.info("Events response. Time: {} EventList: {}", localDateTime, events);
         return events;
+    }
+
+    byte[] extractMediaPoster(JsonNode mediaFile){
+        if(mediaFile.has(MEDIA_PROPERTY)){
+            ObjectNode media = (ObjectNode) mediaFile.get(MEDIA_PROPERTY);
+            if(!media.isNull() && media.has(IMAGE_PROPERTY)){
+                JsonNode image = media.get(IMAGE_PROPERTY);
+                if(!StringUtils.isEmpty(image.textValue())){
+                    return Base64.getDecoder().decode(image.textValue());
+                }
+            }
+        }
+
+        return new byte[0];
     }
 }

@@ -1,13 +1,11 @@
-package com.github.rahmnathan.localmovie.web.control.cache;
+package com.github.rahmnathan.localmovie.web.control;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.github.rahmnathan.localmovie.domain.MediaFile;
-import com.github.rahmnathan.localmovie.domain.MediaFileEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -22,32 +20,29 @@ import static com.github.rahmnathan.localmovie.domain.CachePrefix.*;
 import static com.github.rahmnathan.localmovie.domain.CachePrefix.MEDIA_EVENTS;
 
 @Service
-@Profile("jedis")
-public class CacheServiceJedis implements CacheService {
-    private final Logger logger = LoggerFactory.getLogger(CacheServiceStub.class);
+public class CacheService {
+    private final Logger logger = LoggerFactory.getLogger(CacheService.class);
     private static final ObjectMapper MAPPER = new ObjectMapper().registerModule(new JavaTimeModule());
-    private static final CollectionType EVENT_LIST_TYPE = MAPPER.getTypeFactory().constructCollectionType(List.class, MediaFileEvent.class);
+    private static final CollectionType EVENT_LIST_TYPE = MAPPER.getTypeFactory().constructCollectionType(List.class, JsonNode.class);
     private static final CollectionType FILE_SET_TYPE = MAPPER.getTypeFactory().constructCollectionType(Set.class, String.class);
     private final JedisPool jedisPool;
 
-    public CacheServiceJedis(JedisPool jedisPool) {
+    public CacheService(JedisPool jedisPool) {
         this.jedisPool = jedisPool;
     }
 
-    public MediaFile getMedia(String path){
+    public JsonNode getMedia(String path){
         try (Jedis jedis = jedisPool.getResource()){
             String cacheValue = jedis.get(MEDIA_FILE + path);
             logger.debug("Cache response for media get. Key: {} Value: {}", MEDIA_FILE + path, cacheValue);
             if(cacheValue != null) {
-                return MAPPER.readValue(cacheValue, MediaFile.class);
+                return MAPPER.readTree(cacheValue);
             }
         } catch (IOException e){
             logger.error("Failure getting media from cache.", e);
         }
 
-        return MediaFile.Builder.newInstance()
-                .setPath(path)
-                .build();
+        return MAPPER.createObjectNode().put("path", path);
     }
 
     public Set<String> listFiles(String path) {
@@ -63,7 +58,7 @@ public class CacheServiceJedis implements CacheService {
         return new HashSet<>();
     }
 
-    public List<MediaFileEvent> getMediaEvents(){
+    public List<JsonNode> getMediaEvents(){
         try (Jedis jedis = jedisPool.getResource()){
             String cacheValue = jedis.get(MEDIA_EVENTS.name());
             logger.debug("Cache response for events get. Key: {} Value: {}", MEDIA_EVENTS, cacheValue);
