@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,33 +45,47 @@ class MediaFileUtils {
         });
     }
 
-    private static List<JsonNode> sortMovieInfoList(List<JsonNode> movieInfoList, MediaOrder order){
+    private static List<JsonNode> sortMovieInfoList(List<JsonNode> mediaFileList, MediaOrder order){
         logger.info("Sorting movie list: {}", order.name());
         switch (order) {
-//            case DATE_ADDED:
-//                return movieInfoList.stream()
-//                        .sorted((movie1, movie2) -> Long.compare(movie2.getCreated(), movie1.getCreated()))
-//                        .collect(Collectors.toList());
-//            case MOST_VIEWS:
-//                return movieInfoList.stream()
-//                        .sorted((movie1, movie2) -> Integer.compare(movie2.getViews(), movie1.getViews()))
-//                        .collect(Collectors.toList());
-//            case RELEASE_YEAR:
-//                return movieInfoList.stream()
-//                        .sorted((movie1, movie2) -> Long.valueOf(movie2.getMedia().getReleaseYear())
-//                                .compareTo(Long.valueOf(movie1.getMedia().getReleaseYear())))
-//                        .collect(Collectors.toList());
-//            case RATING:
-//                return movieInfoList.stream()
-//                        .sorted((movie1, movie2) -> Double.valueOf(movie2.getMedia().getImdbRating())
-//                                .compareTo(Double.valueOf(movie1.getMedia().getImdbRating())))
-//                        .collect(Collectors.toList());
-//            case SEASONS_EPISODES:
-//                return movieInfoList.stream()
-//                        .sorted(Comparator.comparing(movie -> movie.getMedia().getNumber()))
-//                        .collect(Collectors.toList());
+            case DATE_ADDED:
+                return mediaFileList.stream()
+                        .sorted(MediaFileUtils::compareCreatedTimestamps)
+                        .collect(Collectors.toList());
+            case MOST_VIEWS:
+                return mediaFileList.stream()
+                        .sorted(MediaFileUtils::compareViews)
+                        .collect(Collectors.toList());
+            case RELEASE_YEAR:
+                return mediaFileList.stream()
+                        .sorted(MediaFileUtils::compareReleaseYear)
+                        .collect(Collectors.toList());
+            case RATING:
+                return mediaFileList.stream()
+                        .sorted(MediaFileUtils::compareImdbRating)
+                        .collect(Collectors.toList());
+            case SEASONS_EPISODES:
+                return mediaFileList.stream()
+                        .sorted(Comparator.comparing(mediaFile -> mediaFile.get("media").get("number").asInt()))
+                        .collect(Collectors.toList());
             default:
-                return movieInfoList;
+                return mediaFileList;
         }
+    }
+
+    private static int compareCreatedTimestamps(JsonNode mediaFile1, JsonNode mediaFile2){
+        return Long.compare(mediaFile2.get("created").longValue(), mediaFile1.get("created").longValue());
+    }
+
+    private static int compareViews(JsonNode mediaFile1, JsonNode mediaFile2){
+        return Integer.compare(mediaFile2.get("views").asInt(), mediaFile1.get("views").asInt());
+    }
+
+    private static int compareReleaseYear(JsonNode mediaFile1, JsonNode mediaFile2){
+        return Long.compare(mediaFile2.get("media").get("releaseYear").asLong(), mediaFile1.get("media").get("releaseYear").asLong());
+    }
+
+    private static int compareImdbRating(JsonNode mediaFile1, JsonNode mediaFile2){
+        return Long.compare(mediaFile2.get("media").get("imdbRating").asLong(), mediaFile1.get("media").get("imdbRating").asLong());
     }
 }
