@@ -1,0 +1,40 @@
+logging.pattern.level: "correlation-id=%X{x-correlation-id} client-address=%X{client-address}"
+
+server:
+  port: 8080
+  ssl:
+    enabled: false
+
+service:
+  mediaPaths: "/opt/localmovie-web/data/internal/LocalMedia/,/opt/localmovie-web/data/external1/LocalMedia/,/opt/localmovie-web/data/external2/LocalMedia/"
+  jedisHost: redis-master
+
+keycloak:
+  auth-server-url: https://localmovies.hopto.org/auth
+  public-client: true
+  realm: LocalMovies
+  resource: localmovie-login
+  security-constraints:
+  - authRoles:
+    - movieuser
+    security-collections:
+    - name: "secure stuff"
+      patterns:
+      - /*
+  ssl-required: external
+  enabled: true
+
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: *
+  metrics:
+    export:
+      prometheus:
+        enabled: true

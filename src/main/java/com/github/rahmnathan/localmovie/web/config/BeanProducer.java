@@ -1,7 +1,6 @@
 package com.github.rahmnathan.localmovie.web.config;
 
 import com.github.rahmnathan.localmovie.web.filter.CorrelationIdFilter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,8 +11,8 @@ import redis.clients.jedis.JedisPoolConfig;
 public class BeanProducer {
     private final String jedisHost;
 
-    public BeanProducer(@Value("${jedis.host}") String jedisHost) {
-        this.jedisHost = jedisHost;
+    public BeanProducer(WebServiceConfig serviceConfig) {
+        this.jedisHost = serviceConfig.getJedisHost();
     }
 
     @Bean

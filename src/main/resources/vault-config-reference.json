@@ -1,30 +1,71 @@
 {
-  "endpoints.health.enabled": true,
-  "spring.profiles.active": "jedis",
-  "jedis.host": "redis-master",
-  "keycloak.auth-server-url": "https://localmovies.hopto.org/auth",
-  "keycloak.public-client": true,
-  "keycloak.realm": "LocalMovies",
-  "keycloak.resource": "localmovie-login",
-  "keycloak.securityConstraints": [
-    {
-      "authRoles": [
-        "movieuser"
-      ],
-      "securityCollections": [
-        {
-          "name": "secure stuff",
-          "patterns": [
-            "/*"
-          ]
+  "keycloak": {
+    "auth-server-url": "https://localmovies.hopto.org/auth",
+    "public-client": true,
+    "realm": "LocalMovies",
+    "resource": "localmovie-login",
+    "security-constraints": [
+      {
+        "authRoles": [
+          "movieuser"
+        ],
+        "security-collections": [
+          {
+            "name": "secure stuff",
+            "patterns": [
+              "/*"
+            ]
+          }
+        ]
+      },
+      {
+        "authRoles": [],
+        "security-collections": [
+          {
+            "name": "insecure stuff",
+            "patterns": [
+              "/actuator/*"
+            ]
+          }
+        ]
+      }
+    ],
+    "ssl-required": "external"
+  },
+  "logging.pattern.level": "correlation-id=%X{x-correlation-id} client-address=%X{client-address}",
+  "management": {
+    "endpoint": {
+      "metrics": {
+        "enabled": "true"
+      },
+      "prometheus": {
+        "enabled": "true"
+      }
+    },
+    "endpoints": {
+      "web": {
+        "exposure": {
+          "include": "*"
         }
-      ]
+      }
+    },
+    "metrics": {
+      "export": {
+        "prometheus": {
+          "enabled": "true"
+        }
+      }
     }
-  ],
-  "keycloak.ssl-required": "external",
-  "logging.pattern.level": "%5p %mdc",
-  "media.path": "/opt/localmovie-web/data/internal/LocalMedia/,/opt/localmovie-web/data/external1/LocalMedia/,/opt/localmovie-web/data/external2/LocalMedia/",
-  "server.port": "8080",
-  "server.servlet-path": "/",
-  "server.ssl.enabled": false
+  },
+  "server": {
+    "port": "8080",
+    "servlet-path": "/",
+    "ssl": {
+      "enabled": "false"
+    }
+  },
+  "service": {
+    "jedisHost": "redis-master",
+    "mediaPaths": "/opt/localmovie-web/data/internal/LocalMedia/,/opt/localmovie-web/data/external1/LocalMedia/,/opt/localmovie-web/data/external2/LocalMedia/"
+  }
 }

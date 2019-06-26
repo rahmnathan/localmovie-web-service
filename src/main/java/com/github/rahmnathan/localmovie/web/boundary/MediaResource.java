@@ -2,6 +2,7 @@ package com.github.rahmnathan.localmovie.web.boundary;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.rahmnathan.localmovie.web.config.WebServiceConfig;
 import com.github.rahmnathan.localmovie.web.control.FileSender;
 import com.github.rahmnathan.localmovie.web.control.MediaMetadataService;
 import com.github.rahmnathan.localmovie.web.data.MovieInfoRequest;
@@ -9,7 +10,6 @@ import com.github.rahmnathan.localmovie.web.data.MovieSearchCriteria;
 import org.apache.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.StringUtils;
@@ -33,9 +33,9 @@ public class MediaResource {
     private final MediaMetadataService metadataService;
     private final String[] mediaPaths;
 
-    public MediaResource(MediaMetadataService metadataService, @Value("${media.path}") String[] mediaPaths){
+    public MediaResource(MediaMetadataService metadataService, WebServiceConfig serviceConfig){
+        this.mediaPaths = serviceConfig.getMediaPaths();
         this.metadataService = metadataService;
-        this.mediaPaths = mediaPaths;
     }
 
     @PostMapping(value = "/localmovie/v2/media", produces=MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -71,17 +71,20 @@ public class MediaResource {
     @GetMapping(value = "/localmovie/v2/media/stream.mp4", produces = "video/mp4")
     public void streamVideo(@RequestParam("path") String path, HttpServletResponse response, HttpServletRequest request) {
         response.setHeader("Access-Control-Allow-Origin", "*");
-
         logger.info("Received streaming request - {}", path);
-        for(String mediaPath : mediaPaths) {
-            logger.info("Checking if mediaPath {} contains requested path {}", mediaPath, path);
-            if (new File(mediaPath + path).exists()) {
-                logger.info("Streaming - {}{}", mediaPath, path);
-                response.setHeader(HttpHeaders.CONTENT_TYPE, "video/mp4");
-                fileSender.serveResource(Paths.get(mediaPath + path), request, response);
-                break;
+
+        JsonNode media = metadataService.loadSingleMediaFile(path);
+        if(media.has("id")) {
+            for (String mediaPath : mediaPaths) {
+                logger.info("Checking if mediaPath {} contains requested path {}", mediaPath, path);
+                if (new File(mediaPath + path).exists()) {
+                    logger.info("Streaming - {}{}", mediaPath, path);
+                    response.setHeader(HttpHeaders.CONTENT_TYPE, "video/mp4");
+                    fileSender.serveResource(Paths.get(mediaPath + path), request, response);
+                    break;
+                }
+                logger.warn("Path not found in mediaPaths: {}", path);
             }
-            logger.warn("Path not found in mediaPaths: {}", path);
         }
     }
 
