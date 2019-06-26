@@ -15,10 +15,10 @@ import static com.github.rahmnathan.localmovie.web.control.MediaFileUtils.remove
 import static com.github.rahmnathan.localmovie.web.control.MediaFileUtils.sortMediaFiles;
 
 @Service
-public class MediaMetadataService {
+public class MediaDataService {
     private final CacheService cacheService;
 
-    public MediaMetadataService(CacheService cacheService) {
+    public MediaDataService(CacheService cacheService) {
         this.cacheService = cacheService;
     }
 

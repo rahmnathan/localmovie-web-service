@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.rahmnathan.localmovie.web.config.WebServiceConfig;
 import com.github.rahmnathan.localmovie.web.control.FileSender;
-import com.github.rahmnathan.localmovie.web.control.MediaMetadataService;
+import com.github.rahmnathan.localmovie.web.control.MediaDataService;
 import com.github.rahmnathan.localmovie.web.data.MovieInfoRequest;
 import com.github.rahmnathan.localmovie.web.data.MovieSearchCriteria;
 import org.apache.http.HttpHeaders;
@@ -30,10 +30,10 @@ public class MediaResource {
     private final FileSender fileSender = new FileSender();
     private static final String MEDIA_PROPERTY = "media";
     private static final String IMAGE_PROPERTY = "image";
-    private final MediaMetadataService metadataService;
+    private final MediaDataService metadataService;
     private final String[] mediaPaths;
 
-    public MediaResource(MediaMetadataService metadataService, WebServiceConfig serviceConfig){
+    public MediaResource(MediaDataService metadataService, WebServiceConfig serviceConfig){
         this.mediaPaths = serviceConfig.getMediaPaths();
         this.metadataService = metadataService;
     }

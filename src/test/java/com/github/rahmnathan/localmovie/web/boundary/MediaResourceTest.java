@@ -3,7 +3,7 @@ package com.github.rahmnathan.localmovie.web.boundary;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.rahmnathan.localmovie.web.config.WebServiceConfig;
-import com.github.rahmnathan.localmovie.web.control.MediaMetadataService;
+import com.github.rahmnathan.localmovie.web.control.MediaDataService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ public class MediaResourceTest {
 
     @BeforeEach
     public void init(){
-        mediaResource = new MediaResource(mock(MediaMetadataService.class), new WebServiceConfig());
+        mediaResource = new MediaResource(mock(MediaDataService.class), new WebServiceConfig());
     }
 
     @Test
