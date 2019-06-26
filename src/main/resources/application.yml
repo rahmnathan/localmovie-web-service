@@ -20,7 +20,7 @@ keycloak:
     security-collections:
     - name: "secure stuff"
       patterns:
-      - /*
+      - "/*"
   ssl-required: external
   enabled: true
 
@@ -33,7 +33,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: *
+        include: "*"
   metrics:
     export:
       prometheus:
