@@ -14,6 +14,11 @@ import java.util.stream.Collectors;
 
 class MediaFileUtils {
     private static final Logger logger = LoggerFactory.getLogger(MediaFileUtils.class.getName());
+    private static final String IMDB_RATING_FIELD = "imdbRatingField";
+    private static final String RELEASE_YEAR_FIELD = "releaseYear";
+    private static final String CREATED_FIELD = "created";
+    private static final String MEDIA_FIELD = "media";
+    private static final String VIEWS_FIELD = "views";
 
     static List<JsonNode> sortMediaFiles(MediaRequest mediaRequest, List<JsonNode> mediaFiles){
         if (mediaRequest.getPath().split(File.separator).length > 1) {
@@ -74,18 +79,24 @@ class MediaFileUtils {
     }
 
     private static int compareCreatedTimestamps(JsonNode mediaFile1, JsonNode mediaFile2){
-        return Long.compare(mediaFile2.get("created").longValue(), mediaFile1.get("created").longValue());
+        return Long.compare(mediaFile2.get(CREATED_FIELD).longValue(), mediaFile1.get(CREATED_FIELD).longValue());
     }
 
     private static int compareViews(JsonNode mediaFile1, JsonNode mediaFile2){
-        return Integer.compare(mediaFile2.get("views").asInt(), mediaFile1.get("views").asInt());
+        return Integer.compare(mediaFile2.get(VIEWS_FIELD).asInt(), mediaFile1.get(VIEWS_FIELD).asInt());
     }
 
     private static int compareReleaseYear(JsonNode mediaFile1, JsonNode mediaFile2){
-        return Long.compare(mediaFile2.get("media").get("releaseYear").asLong(), mediaFile1.get("media").get("releaseYear").asLong());
+        long mediaFile1ReleaseYear = mediaFile1.get(MEDIA_FIELD).get(RELEASE_YEAR_FIELD).asLong();
+        long mediaFile2ReleaseYear = mediaFile2.get(MEDIA_FIELD).get(RELEASE_YEAR_FIELD).asLong();
+
+        return Long.compare(mediaFile2ReleaseYear, mediaFile1ReleaseYear);
     }
 
     private static int compareImdbRating(JsonNode mediaFile1, JsonNode mediaFile2){
-        return Long.compare(mediaFile2.get("media").get("imdbRating").asLong(), mediaFile1.get("media").get("imdbRating").asLong());
+        double mediaFile1ImdbRating = mediaFile1.get(MEDIA_FIELD).get(IMDB_RATING_FIELD).asDouble();
+        double mediaFile2ImdbRating = mediaFile2.get(MEDIA_FIELD).get(IMDB_RATING_FIELD).asDouble();
+
+        return Double.compare(mediaFile2ImdbRating, mediaFile1ImdbRating);
     }
 }
