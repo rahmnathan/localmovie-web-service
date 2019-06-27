@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.rahmnathan.localmovie.web.data.MediaClient;
-import com.github.rahmnathan.localmovie.web.data.MovieSearchCriteria;
+import com.github.rahmnathan.localmovie.web.data.MediaRequest;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -46,9 +46,9 @@ public class MediaDataServiceTest {
         when(cacheService.getMedia(secondPath)).thenReturn(MAPPER.createObjectNode().put("path", secondPath));
         when(cacheService.listFiles(PATH)).thenReturn(Set.of(PATH, secondPath));
 
-        MovieSearchCriteria movieSearchCriteria = new MovieSearchCriteria(PATH, 0, 2, MediaClient.ANDROID, null);
+        MediaRequest mediaRequest = new MediaRequest(PATH, 0, 2, MediaClient.ANDROID, null);
 
-        List<JsonNode> mediaFiles = mediaDataService.loadMediaFileList(movieSearchCriteria);
+        List<JsonNode> mediaFiles = mediaDataService.loadMediaFileList(mediaRequest);
 
         assertEquals(2, mediaFiles.size());
     }

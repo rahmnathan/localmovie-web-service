@@ -3,7 +3,7 @@ package com.github.rahmnathan.localmovie.web.control;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.rahmnathan.localmovie.web.data.MediaOrder;
-import com.github.rahmnathan.localmovie.web.data.MovieSearchCriteria;
+import com.github.rahmnathan.localmovie.web.data.MediaRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,21 +15,21 @@ import java.util.stream.Collectors;
 class MediaFileUtils {
     private static final Logger logger = LoggerFactory.getLogger(MediaFileUtils.class.getName());
 
-    static List<JsonNode> sortMediaFiles(MovieSearchCriteria searchCriteria, List<JsonNode> mediaFiles){
-        if (searchCriteria.getPath().split(File.separator).length > 1) {
+    static List<JsonNode> sortMediaFiles(MediaRequest mediaRequest, List<JsonNode> mediaFiles){
+        if (mediaRequest.getPath().split(File.separator).length > 1) {
             return sortMovieInfoList(mediaFiles, MediaOrder.SEASONS_EPISODES);
-        } else if (searchCriteria.getOrder() != null) {
-            return sortMovieInfoList(mediaFiles, searchCriteria.getOrder());
+        } else if (mediaRequest.getOrder() != null) {
+            return sortMovieInfoList(mediaFiles, mediaRequest.getOrder());
         }
 
         return mediaFiles;
     }
 
-    static List<JsonNode> paginateMediaFiles(List<JsonNode> mediaFiles, MovieSearchCriteria searchCriteria){
-        logger.info("Paginating movie list - page: {} resultsPerPage: {}", searchCriteria.getPage(), searchCriteria.getItemsPerPage());
+    static List<JsonNode> paginateMediaFiles(List<JsonNode> mediaFiles, MediaRequest mediaRequest){
+        logger.info("Paginating movie list - page: {} resultsPerPage: {}", mediaRequest.getPage(), mediaRequest.getResultsPerPage());
         return mediaFiles.stream()
-                .skip(searchCriteria.getPage() * searchCriteria.getItemsPerPage())
-                .limit(searchCriteria.getItemsPerPage())
+                .skip(mediaRequest.getPage() * mediaRequest.getResultsPerPage())
+                .limit(mediaRequest.getResultsPerPage())
                 .collect(Collectors.toList());
     }
 

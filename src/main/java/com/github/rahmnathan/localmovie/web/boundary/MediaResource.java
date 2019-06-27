@@ -5,8 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.rahmnathan.localmovie.web.config.WebServiceConfig;
 import com.github.rahmnathan.localmovie.web.control.FileSender;
 import com.github.rahmnathan.localmovie.web.control.MediaDataService;
-import com.github.rahmnathan.localmovie.web.data.MovieInfoRequest;
-import com.github.rahmnathan.localmovie.web.data.MovieSearchCriteria;
+import com.github.rahmnathan.localmovie.web.data.MediaRequest;
 import org.apache.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,24 +38,21 @@ public class MediaResource {
     }
 
     @PostMapping(value = "/localmovie/v2/media", produces=MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<JsonNode> getMovies(@RequestBody MovieInfoRequest movieInfoRequest, HttpServletResponse response) {
-        logger.info("Received request: {}", movieInfoRequest.toString());
+    public List<JsonNode> getMedia(@RequestBody MediaRequest mediaRequest, HttpServletResponse response) {
+        logger.info("Received request: {}", mediaRequest.toString());
 
-        MovieSearchCriteria searchCriteria = new MovieSearchCriteria(movieInfoRequest.getPath(), movieInfoRequest.getPage(),
-                movieInfoRequest.getResultsPerPage(), movieInfoRequest.getClient(), movieInfoRequest.getOrder());
-
-        Integer page = searchCriteria.getPage();
+        Integer page = mediaRequest.getPage();
         if(page != null && page == 0)
-            getMovieCount(movieInfoRequest.getPath(), response);
+            getMediaCount(mediaRequest.getPath(), response);
 
-        List<JsonNode> movieInfoList = metadataService.loadMediaFileList(searchCriteria);
+        List<JsonNode> movieInfoList = metadataService.loadMediaFileList(mediaRequest);
 
         logger.info("Returning {} movies", movieInfoList.size());
         return movieInfoList;
     }
 
     @GetMapping(value = "/localmovie/v2/media/count")
-    public void getMovieCount(@RequestParam(value = "path") String path, HttpServletResponse response){
+    public void getMediaCount(@RequestParam(value = "path") String path, HttpServletResponse response){
         logger.info("Received count request for path - {}", path);
 
         int count = metadataService.loadMediaListLength(path);

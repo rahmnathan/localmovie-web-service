@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.rahmnathan.localmovie.web.data.MediaClient;
 import com.github.rahmnathan.localmovie.web.data.MediaOrder;
-import com.github.rahmnathan.localmovie.web.data.MovieSearchCriteria;
+import com.github.rahmnathan.localmovie.web.data.MediaRequest;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -38,9 +38,9 @@ public class MediaFileUtilsTest {
 
         List<JsonNode> mediaList = List.of(mediaFile3, mediaFile2, mediaFile1, mediaFile4);
 
-        MovieSearchCriteria searchCriteria = new MovieSearchCriteria("", 1, 1, MediaClient.WEBAPP, MediaOrder.DATE_ADDED);
+        MediaRequest mediaRequest = new MediaRequest("", 1, 1, MediaClient.WEBAPP, MediaOrder.DATE_ADDED);
 
-        sortMediaFiles(searchCriteria, mediaList);
+        sortMediaFiles(mediaRequest, mediaList);
 
         assertEquals(mediaFile3.get("created").textValue(), mediaList.get(0).get("created").asText());
         assertEquals(mediaFile2.get("created").textValue(), mediaList.get(1).get("created").asText());

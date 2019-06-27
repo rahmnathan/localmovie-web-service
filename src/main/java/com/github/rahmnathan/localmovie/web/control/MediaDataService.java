@@ -2,7 +2,7 @@ package com.github.rahmnathan.localmovie.web.control;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.rahmnathan.localmovie.web.data.MediaClient;
-import com.github.rahmnathan.localmovie.web.data.MovieSearchCriteria;
+import com.github.rahmnathan.localmovie.web.data.MediaRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,16 +30,16 @@ public class MediaDataService {
         return cacheService.getMedia(filePath);
     }
 
-    public List<JsonNode> loadMediaFileList(MovieSearchCriteria searchCriteria) {
-        Set<String> files = cacheService.listFiles(searchCriteria.getPath());
+    public List<JsonNode> loadMediaFileList(MediaRequest mediaRequest) {
+        Set<String> files = cacheService.listFiles(mediaRequest.getPath());
         List<JsonNode> movies = loadMedia(files);
 
-        if (searchCriteria.getClient() == MediaClient.WEBAPP) {
+        if (mediaRequest.getClient() == MediaClient.WEBAPP) {
             removePosterImages(movies);
         }
 
-        movies = sortMediaFiles(searchCriteria, movies);
-        return paginateMediaFiles(movies, searchCriteria);
+        movies = sortMediaFiles(mediaRequest, movies);
+        return paginateMediaFiles(movies, mediaRequest);
     }
 
     private List<JsonNode> loadMedia(Set<String> relativePaths){
