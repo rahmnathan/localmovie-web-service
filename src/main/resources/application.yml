@@ -21,6 +21,11 @@ keycloak:
     - name: "secure stuff"
       patterns:
       - "/*"
+  - authRoles:
+    security-collections:
+      - name: "insecure stuff"
+        patterns:
+          - "/actuator/*"
   ssl-required: external
   enabled: true
 
