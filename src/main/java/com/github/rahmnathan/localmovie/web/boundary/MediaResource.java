@@ -24,6 +24,7 @@ import java.util.Base64;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/localmovie/v2/media")
 public class MediaResource {
     private final Logger logger = LoggerFactory.getLogger(MediaResource.class.getName());
     private final FileSender fileSender = new FileSender();
@@ -37,7 +38,7 @@ public class MediaResource {
         this.metadataService = metadataService;
     }
 
-    @PostMapping(value = "/localmovie/v2/media", produces=MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(produces=MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<JsonNode> getMedia(@RequestBody MediaRequest mediaRequest, HttpServletResponse response) {
         logger.info("Received request: {}", mediaRequest.toString());
 
@@ -51,7 +52,7 @@ public class MediaResource {
         return movieInfoList;
     }
 
-    @GetMapping(value = "/localmovie/v2/media/count")
+    @GetMapping(value = "/count")
     public void getMediaCount(@RequestParam(value = "path") String path, HttpServletResponse response){
         logger.info("Received count request for path - {}", path);
 
@@ -64,7 +65,7 @@ public class MediaResource {
     /**
      * @param path - Path to video file to stream
      */
-    @GetMapping(value = "/localmovie/v2/media/stream.mp4", produces = "video/mp4")
+    @GetMapping(value = "/stream.mp4", produces = "video/mp4")
     public void streamVideo(@RequestParam("path") String path, HttpServletResponse response, HttpServletRequest request) {
         response.setHeader("Access-Control-Allow-Origin", "*");
         logger.info("Received streaming request - {}", path);
@@ -88,7 +89,7 @@ public class MediaResource {
      * @param path - Path to video file
      * @return - Poster image for specified video file
      */
-    @GetMapping(path = "/localmovie/v2/media/poster")
+    @GetMapping(path = "/poster")
     public byte[] getPoster(@RequestParam("path") String path) {
         logger.info("Streaming poster - {}", path);
 
@@ -101,7 +102,7 @@ public class MediaResource {
      * @param epoch - Timestamp to collect events since
      * @return - List of MediaFileEvents
      */
-    @GetMapping(path = "/localmovie/v2/media/events")
+    @GetMapping(path = "/events")
     public List<JsonNode> getEvents(@RequestParam("timestamp") Long epoch) {
         LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(epoch), ZoneId.systemDefault());
         logger.info("Request for events since: {}", localDateTime);
