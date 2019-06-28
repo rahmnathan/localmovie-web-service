@@ -5,9 +5,6 @@ RUN addgroup -S localmovie && adduser -S localmovie -G localmovie && mkdir -p /o
 ADD src/main/resources/vault.crt /opt/localmovie/vault.crt
 RUN keytool -importcert -file /opt/localmovie/vault.crt -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit -noprompt -alias "vault"
 
-ADD src/main/resources/keycloak.crt /opt/localmovie/keycloak.crt
-RUN keytool -importcert -file /opt/localmovie/keycloak.crt -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit -noprompt -alias "keycloak"
-
 ARG JAR_FILE
 ADD target/$JAR_FILE /opt/localmovie/localmovie-web.jar
 
