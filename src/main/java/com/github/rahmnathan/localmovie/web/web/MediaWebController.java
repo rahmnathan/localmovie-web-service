@@ -1,4 +1,4 @@
-package com.github.rahmnathan.localmovie.web.boundary;
+package com.github.rahmnathan.localmovie.web.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

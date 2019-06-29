@@ -1,4 +1,4 @@
-package com.github.rahmnathan.localmovie.web.boundary;
+package com.github.rahmnathan.localmovie.web.web;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -68,6 +68,7 @@ public class MediaResource {
     @GetMapping(value = "/stream.mp4", produces = "video/mp4")
     public void streamVideo(@RequestParam("path") String path, HttpServletResponse response, HttpServletRequest request) {
         response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader(HttpHeaders.CONTENT_TYPE, "video/mp4");
         logger.info("Received streaming request - {}", path);
 
         JsonNode media = metadataService.loadSingleMediaFile(path);
@@ -76,7 +77,6 @@ public class MediaResource {
                 logger.info("Checking if mediaPath {} contains requested path {}", mediaPath, path);
                 if (new File(mediaPath + path).exists()) {
                     logger.info("Streaming - {}{}", mediaPath, path);
-                    response.setHeader(HttpHeaders.CONTENT_TYPE, "video/mp4");
                     fileSender.serveResource(Paths.get(mediaPath + path), request, response);
                     break;
                 }

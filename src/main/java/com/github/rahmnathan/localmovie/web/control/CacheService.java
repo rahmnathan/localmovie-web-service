@@ -31,7 +31,7 @@ public class CacheService {
         this.jedisPool = jedisPool;
     }
 
-    public JsonNode getMedia(String path){
+    JsonNode getMedia(String path){
         try (Jedis jedis = jedisPool.getResource()){
             String cacheValue = jedis.get(MEDIA_FILE + path);
             logger.debug("Cache response for media get. Key: {} Value: {}", MEDIA_FILE + path, cacheValue);
@@ -45,7 +45,7 @@ public class CacheService {
         return MAPPER.createObjectNode().put("path", path);
     }
 
-    public Set<String> listFiles(String path) {
+    Set<String> listFiles(String path) {
         try (Jedis jedis = jedisPool.getResource()){
             String cacheValue = jedis.get(FILE_LIST + path);
             logger.debug("Cache response for file list get. Key: {} Value: {}", FILE_LIST + path, cacheValue);
@@ -58,7 +58,7 @@ public class CacheService {
         return new HashSet<>();
     }
 
-    public List<JsonNode> getMediaEvents(){
+    List<JsonNode> getMediaEvents(){
         try (Jedis jedis = jedisPool.getResource()){
             String cacheValue = jedis.get(MEDIA_EVENTS.name());
             logger.debug("Cache response for events get. Key: {} Value: {}", MEDIA_EVENTS, cacheValue);
