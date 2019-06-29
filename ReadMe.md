@@ -1,6 +1,6 @@
 <h1>LocalMovies</h1>
 
-[![Build Status](https://nathanrahm-jenkins.ddns.net/job/localmovie-web/badge/icon)](https://nathanrahm-jenkins.ddns.net/job/localmovie-web/)
+[![Build Status](https://nathanrahm-jenkins.ddns.net/buildStatus/icon?job=localmovie-web)](https://nathanrahm-jenkins.ddns.net/job/localmovie-web/)
 
 This project is a video streaming service for my media collection. The project consists of
 several components: Android client, web client, and the back-end system. The backend system
