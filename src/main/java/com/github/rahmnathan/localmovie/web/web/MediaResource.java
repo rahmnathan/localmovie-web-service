@@ -71,17 +71,23 @@ public class MediaResource {
         response.setHeader(HttpHeaders.CONTENT_TYPE, "video/mp4");
         logger.info("Received streaming request - {}", path);
 
+        boolean found = false;
         JsonNode media = metadataService.loadSingleMediaFile(path);
         if(media.has("id")) {
             for (String mediaPath : mediaPaths) {
                 logger.info("Checking if mediaPath {} contains requested path {}", mediaPath, path);
                 if (new File(mediaPath + path).exists()) {
                     logger.info("Streaming - {}{}", mediaPath, path);
+                    found = true;
                     fileSender.serveResource(Paths.get(mediaPath + path), request, response);
                     break;
                 }
+            }
+            if(!found) {
                 logger.warn("Path not found in mediaPaths: {}", path);
             }
+        } else {
+            logger.warn("Requested path does not exist in cache.");
         }
     }
 
@@ -98,7 +104,6 @@ public class MediaResource {
     }
 
     /**
-     *
      * @param epoch - Timestamp to collect events since
      * @return - List of MediaFileEvents
      */
@@ -113,7 +118,7 @@ public class MediaResource {
         return events;
     }
 
-    byte[] extractMediaPoster(JsonNode mediaFile){
+    private byte[] extractMediaPoster(JsonNode mediaFile){
         if(mediaFile.has(MEDIA_PROPERTY)){
             ObjectNode media = (ObjectNode) mediaFile.get(MEDIA_PROPERTY);
             if(!media.isNull() && media.has(IMAGE_PROPERTY)){
