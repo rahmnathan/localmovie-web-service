@@ -18,7 +18,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
 
-        <kotlin.version>1.3.40</kotlin.version>
+        <kotlin.version>1.3.41</kotlin.version>
         <springfox.version>2.7.0</springfox.version>
     </properties>
 
@@ -151,7 +151,7 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>1.4.8</version>
                 <configuration>
-                    <repository>192.168.1.8:5000/localmovie-web</repository>
+                    <repository>rahmnathan/localmovie-web</repository>
                     <tag>latest</tag>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
